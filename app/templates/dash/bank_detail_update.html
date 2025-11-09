@@ -1,0 +1,48 @@
+{% extends 'dash/base.html' %}
+{% block title %}Update Bank Details{% endblock %}
+
+{% block content %}
+<div class="container mt-8  ml-80 mr-10">
+    <h3 class="mb-4 text-white fw-bold">💰 Update Bank Details</h3>
+
+    <div class="card shadow-sm rounded-4 p-4">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                <label class="form-label">Account Name</label>
+                <input type="text" name="account_name" class="form-control" value="{{ bank_detail.account_name }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Account Number</label>
+                <input type="text" name="account_number" class="form-control" value="{{ bank_detail.account_number }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">IFSC Code</label>
+                <input type="text" name="ifsc" class="form-control" value="{{ bank_detail.ifsc }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Branch</label>
+                <input type="text" name="branch" class="form-control" value="{{ bank_detail.branch }}" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">UPI QR Code (optional)</label>
+                <input type="file" name="upi_qr" class="form-control" accept="image/*">
+            </div>
+
+            {% if bank_detail.upi_qr %}
+            <div class="mb-3">
+                <label>Current QR Code:</label><br>
+                <img src="{{ bank_detail.upi_qr.url }}" width="200">
+            </div>
+            {% endif %}
+
+            <button type="submit" class="btn btn-primary rounded-pill">Save</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

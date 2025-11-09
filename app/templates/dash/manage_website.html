@@ -1,0 +1,117 @@
+{% extends 'dash/base.html' %}
+
+{% block content %}
+<div class="container mt-4 ml-80 mr-10">
+  <h3 class="fw-bold mb-4 text-white">🛠 Manage Website</h3>
+
+  <div class="row g-4">
+
+    <!-- Gallery -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-images fa-3x text-primary mb-3"></i> -->
+          <i class="fas fa-images fa-3x mb-3" style="color:#ff3725;"></i> <!-- Coral Red -->
+          <h5 class="card-title fw-bold">Gallery</h5>
+          <p class="text-muted small">Manage your event photos and categories</p>
+          <a href="{% url 'gallery_list' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Services -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-hand-holding-heart fa-3x text-info mb-3"></i> -->
+          <i class="fas fa-hand-holding-heart fa-3x mb-3" style="color:#00527a;"></i> <!-- Peach -->
+          <h5 class="card-title fw-bold">Services</h5>
+          <p class="text-muted small">Edit your service offerings</p>
+          <a href="{% url 'service_list' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+ 
+    <!-- Banner -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-flag fa-3x text-success mb-3"></i> -->
+          <i class="fas fa-flag fa-3x mb-3" style="color:#0b950f;"></i> <!-- Green -->
+          <h5 class="card-title fw-bold">Banner</h5>
+          <p class="text-muted small">Manage homepage video or image Banner</p>
+          <a href="{% url 'manage_banner' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Testimonials -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-comments fa-3x text-primary mb-3"></i> -->
+          <i class="fas fa-comments fa-3x mb-3" style="color:#2196f3;"></i> <!-- Blue -->
+          <h5 class="card-title fw-bold">Testimonials</h5>
+          <p class="text-muted small">Manage customer feedbacks</p>
+          <a href="{% url 'testimonial_list' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube Testimonials -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-play fa-3x text-danger mb-3"></i> -->
+          <i class="fas fa-play fa-3x mb-3" style="color:#c0000d;"></i> <!-- Pink -->
+          <h5 class="card-title fw-bold">Shorts Testimonials</h5>
+          <p class="text-muted small">Manage Testimonial Video</p>
+           <a href="{% url 'video_testimonial_list' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- YouTube Video -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fab fa-youtube fa-3x text-danger mb-3"></i> -->
+          <i class="fab fa-youtube fa-3x mb-3" style="color:#ff0000;"></i> <!-- YouTube Red -->
+          <h5 class="card-title fw-bold">YouTube Videos</h5>
+          <p class="text-muted small">Manage YouTube links</p>
+           <a href="{% url 'manage_event_videos' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contact Messages -->
+    <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-message fa-3x text-yellow mb-3"></i> -->
+          <i class="fas fa-message fa-3x mb-3" style="color:#ffa600;"></i> <!-- Yellow -->
+          <h5 class="card-title fw-bold">Contact Messages</h5>
+          <p class="text-muted small">Manage contact messages</p>
+           <a href="{% url 'contact_messages' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bank Details -->
+     <div class="col-md-4">
+      <div class="card shadow-sm border-0 h-100">
+        <div class="card-body text-center">
+          <!-- <i class="fas fa-university fa-3x text-primary mb-3"></i> -->
+          <i class="fas fa-university fa-3x mb-3" style="color:#0d00c2;"></i> <!-- Purple -->
+          <h5 class="card-title fw-bold">Bank Details</h5>
+          <p class="text-muted small">Manage your BankDetails</p>
+           <a href="{% url 'bank_detail_update' %}" class="btn btn-outline-primary rounded-pill">Manage</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

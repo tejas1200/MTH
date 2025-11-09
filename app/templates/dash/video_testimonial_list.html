@@ -1,0 +1,135 @@
+{% extends 'dash/base.html' %}
+{% load static %}
+{% block title %}Manage Video Testimonials{% endblock %}
+
+{% block content %}
+
+<div class="container mt-4 ml-80 mr-10">
+  <h3 class="fw-bold mb-4 text-white">🎥 Manage Video Testimonials</h3>
+
+  <!-- Add New Video Testimonial -->
+  <div class="card shadow-sm border-0 rounded-4 mb-5">
+    <div class="card-body">
+      <h5 class="fw-bold mb-3">Add New Video Testimonial</h5>
+      
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Video</label>
+            <input type="file" name="video" class="form-control" accept="video/*" required>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Title</label>
+            <input type="text" name="title" class="form-control" placeholder="Video Title">
+          </div>
+        </div>
+        <div class="text-end mt-3">
+         <button type="submit" name="add_video_testimonial" class="btn btn-primary rounded-pill px-4">
+            <i class="fas fa-plus"></i> Add Testimonial
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Uploaded Videos List -->
+  <div class="card shadow-sm border-0 rounded-4">
+    <div class="card-body">
+      <h5 class="fw-bold mb-3">All Uploaded Testimonials</h5>
+      <div class="row justify-content">
+        {% for vid in page_obj %}
+        <div class="col-6 col-sm-4 col-md-2 mb-4"> <!-- 👈 6 per row -->
+            <div class="card border-0 shadow-sm rounded-4 reel-card position-relative">
+              <div class="reel-container position-relative" style="aspect-ratio: 9 / 16; overflow: hidden; border-radius: 0.75rem;">
+                <video 
+                  class="reel-video w-100 h-100 object-fit-cover" 
+                  controls
+                  preload="metadata"
+                  poster="{% if vid.thumbnail %}{{ vid.thumbnail.url }}{% else %}{% static 'images/video-placeholder.jpg' %}{% endif %}">
+                  <source src="{{ vid.video_file.url }}" type="video/mp4">
+                  Your browser does not support the video tag.
+                </video>
+
+                <div class="play-overlay position-absolute top-50 start-50 translate-middle">
+                  <i class="fas fa-play-circle fa-2x text-white opacity-75"></i>
+                </div>
+              </div>
+
+              <h6 class="fw-bold mt-2 text-center text-white text-truncate px-1">{{ vid.title|default:"Untitled Video" }}</h6>
+
+              <div class="text-center mb-2">
+                <button class="btn btn-sm btn-warning rounded-pill mt-1" data-bs-toggle="modal" data-bs-target="#editModal{{ vid.id }}">
+                  <i class="fas fa-edit"></i>
+                </button>
+                <form method="POST" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="delete_video_testimonial" value="{{ vid.id }}">
+                  <button type="submit" class="btn btn-sm btn-danger rounded-pill mt-1">
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        <!-- Edit Modal -->
+        <div class="modal fade" id="editModal{{ vid.id }}" tabindex="-1">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4">
+              <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="edit_video_testimonial" value="1">
+                <input type="hidden" name="vid_id" value="{{ vid.id }}">
+                <div class="modal-header">
+                  <h5 class="modal-title">Edit Video Testimonial</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label class="form-label">Title</label>
+                    <input type="text" name="title" value="{{ vid.title }}" class="form-control rounded-3" required>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="submit" class="btn btn-success rounded-pill px-4">Save</button>
+                  <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        {% endfor %}
+      </div>
+
+      <!-- Pagination -->
+      {% if page_obj.has_other_pages %}
+      <nav aria-label="Video testimonial pagination" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if page_obj.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.previous_page_number }}">« Prev</a>
+            </li>
+          {% endif %}
+
+          {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+              <li class="page-item active"><a class="page-link">{{ num }}</a></li>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if page_obj.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next »</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

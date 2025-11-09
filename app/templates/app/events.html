@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Events - New Mahavir Tent House</title>
+
+  <!-- Bootstrap & Vendor CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <!-- Main CSS -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+  <style>
+    .event-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+
+    .event-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+
+    .event-thumbnail {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-top-left-radius: .25rem;
+      border-top-right-radius: .25rem;
+    }
+
+    .card-body {
+      flex-grow: 1;
+    }
+  </style>
+</head>
+
+<body>
+  
+   <!-- Header Nav -->
+
+  {% include 'partials/header.html' %}
+  <!-- End Header Nav -->
+
+  <!-- Page Title -->
+  <div class="page-title dark-background" style="background-image: url({% static 'images/Back_Banner.jpg' %});">
+    <div class="container position-relative">
+      <h1>Events</h1>
+      <p>Explore our collection of memorable events and celebrations.</p>
+      <nav class="breadcrumbs">
+        <ol>
+          <li><a href="{% url 'index' %}">Home</a></li>
+          <li class="current">Events</li>
+        </ol>
+      </nav>
+    </div>
+  </div>
+
+  <main class="container py-5">
+    <div class="row g-4">
+      {% for video in event_videos %}
+        <div class="col-lg-4 col-md-6 col-sm-12">
+          <div class="card event-card h-100 shadow-sm">
+            {% if video.youtube_id %}
+              <a href="https://www.youtube.com/watch?v={{ video.youtube_id }}" class="glightbox" data-type="video">
+                <img src="https://img.youtube.com/vi/{{ video.youtube_id }}/hqdefault.jpg"
+                     alt="{{ video.event_name }}" class="event-thumbnail">
+              </a>
+            {% else %}
+              <img src="{% static 'images/default-video.png' %}" alt="No video" class="event-thumbnail">
+            {% endif %}
+            <div class="card-body">
+              <h5 class="card-title">{{ video.event_name }}</h5>
+              <p class="card-text">{{ video.place }} | {{ video.event_date|date:"d M, Y" }}</p>
+            </div>
+          </div>
+        </div>
+      {% empty %}
+        <p class="text-center">No event videos available.</p>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if event_videos.has_other_pages %}
+      <nav aria-label="Page navigation" class="mt-4">
+        <ul class="pagination justify-content-center">
+          {% if event_videos.has_previous %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ event_videos.previous_page_number }}">&laquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+          {% endif %}
+
+          {% for num in event_videos.paginator.page_range %}
+            {% if event_videos.number == num %}
+              <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > event_videos.number|add:'-3' and num < event_videos.number|add:'3' %}
+              <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+          {% endfor %}
+
+          {% if event_videos.has_next %}
+            <li class="page-item">
+              <a class="page-link" href="?page={{ event_videos.next_page_number }}">&raquo;</a>
+            </li>
+          {% else %}
+            <li class="page-item disabled"><span class="page-link">&raquo;</span></li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </main>
+
+     <!-- Footer -->
+{% include 'partials/footer.html' %}
+
+  <!-- JS -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+  <script>
+    const lightbox = GLightbox({
+      selector: '.glightbox',
+      type: 'video',
+      source: 'youtube',
+      width: 900,
+      autoplayVideos: true,
+    });
+  </script>
+</body>
+</html>

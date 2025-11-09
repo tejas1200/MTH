@@ -1,0 +1,88 @@
+{% extends 'dash/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5 mb-5">
+  <div class="row justify-content-center">
+    {# Main Card Width: Centered for a focused look #}
+    <div class="col-lg-8 col-xl-6">
+      <div class="card shadow-lg border-0 rounded-4 p-4">
+        
+        {# Card Heading #}
+        <h4 class="card-header bg-white border-bottom-0 pb-0 fw-bold text-center">
+          <i class="fas fa-user-circle me-2 text-primary"></i>Update Your Profile
+        </h4>
+
+        <div class="card-body pt-0">
+          <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            {# --- Profile Image Display & Upload --- #}
+            <div class="text-center mb-4 pb-4 border-bottom">
+              <div class="d-inline-block position-relative">
+                
+                {# Existing Image Logic: Larger, Circular Display #}
+                {% if user.profile_image %}
+                  <img src="{{ user.profile_image.url }}" alt="Profile Image" 
+                       class="rounded-circle mb-2 object-fit-cover shadow" style="width: 120px; height: 120px; border: 4px solid #f8f9fa;">
+                {% else %}
+                  <img src="{% static 'images/avatar.png' %}" alt="Default Avatar" 
+                       class="rounded-circle mb-2 object-fit-cover shadow" style="width: 120px; height: 120px; border: 4px solid #f8f9fa;">
+                {% endif %}
+
+                {# Overlayed Camera/Edit Icon (Visual Cue for file input) #}
+                <label for="profileImageInput" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle p-2 shadow-sm" 
+                       style="cursor: pointer; transform: translate(15%, 15%); font-size: 0.7rem;">
+                    <i class="fas fa-camera"></i>
+                </label>
+              </div>
+              
+              {# Hidden file input, triggered by the camera icon label #}
+              <input type="file" name="profile_image" id="profileImageInput" class="form-control d-none">
+              <p class="text-muted mt-2 mb-0 small">Change your profile image</p>
+            </div>
+
+            {# --- Account Details Section --- #}
+            <h6 class="text-muted mb-3 fw-bold">Account Details</h6>
+
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Name</label>
+                {# Preserving the original name/value attributes #}
+                <input type="text" name="name" class="form-control rounded-pill" value="{{ user.first_name }}">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Email</label>
+                {# Preserving the original name/value attributes #}
+                <input type="email" name="email" class="form-control rounded-pill" value="{{ user.email }}">
+              </div>
+
+              <div class="col-md-6">
+                <label class="form-label fw-medium">Mobile</label>
+                {# Preserving the original name/value attributes #}
+                <input type="text" name="mobile" class="form-control rounded-pill" value="{{ user.contact }}">
+              </div>
+            </div>
+
+            <h6 class="text-muted mt-4 mb-3 fw-bold border-top pt-3">Security</h6>
+            <div class="row">
+              <div class="col-12">
+                <label class="form-label fw-medium">New Password</label>
+                {# Preserving the original name/placeholder attributes #}
+                <input type="password" name="password" class="form-control rounded-pill" placeholder="Enter new password (optional)">
+              </div>
+            </div>
+
+            <div class="d-grid mt-5">
+              <button type="submit" class="btn btn-primary btn-lg rounded-pill shadow-lg">
+                <i class="fas fa-save me-2"></i> Save Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

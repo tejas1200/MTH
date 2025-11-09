@@ -1,0 +1,14 @@
+{% extends 'dash/base.html' %}
+
+
+
+{% block content %}
+<div class="container mt-5 text-center">
+  <h3 style="color: white; margin-top: 70px; margin-bottom: 20px;">Are you sure you want to delete #{{ bill.bill_number }}?</h3>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="{% url 'bill_list' %}" class="btn btn-primary">Cancel</a>
+  </form>
+</div>
+{% endblock %}

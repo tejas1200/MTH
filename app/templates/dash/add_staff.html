@@ -1,0 +1,84 @@
+{% extends 'dash/base.html' %}
+
+<title>{% block title %} MahavirTent- AddStaff {% endblock %}</title>
+
+
+<!-- Main Content -->
+{% block content %}
+<!-- Main Content -->
+<main class="main-content">
+
+    <div class="header" style="color:white ;">
+        <h2 class="px-4">Add Staff Details</h2>
+    </div>
+
+    <div class="container-fluid mt-4">
+        <div class="card form-card">
+            <div class="card-body">
+                <!-- <h4 class="mb-4">Enter Staff Details</h4> -->
+                {% if messages %}
+                <ul style="list-style: none; padding: 0; margin: 0; display: flex; justify-content: center;">
+                    {% for message in messages %}
+                    <li class="message" style="color: green; font-weight: bold; text-align: center; margin-top: 10px;">
+                        {{ message }}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+
+                <form action="#" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="staffName" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="staffName" name="name" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="staffPhone" class="form-label">Phone</label>
+                        <input type="text" class="form-control" id="staffPhone" name="phone" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="staffRole" class="form-label">Role</label>
+                        <input type="text" class="form-control" id="staffRole" name="role" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="staffAddress" class="form-label">Address</label>
+                        <textarea class="form-control" id="staffAddress" name="address" rows="3"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="staffPhoto" class="form-label">Photo</label>
+                        <input type="file" class="form-control" id="staffPhoto" name="photo">
+                    </div>
+
+                    <!-- <div class="mb-3">
+                        <label for="staffStatus" class="form-label">Status</label>
+                        <select class="form-select" id="staffStatus" name="is_active">
+                            <option value="True">Active</option>
+                            <option value="False">Inactive</option>
+                        </select>
+                    </div> -->
+
+                    <div class="d-flex justify-content-end">
+                        <button type="reset" class="btn btn-secondary rounded-pill me-2 mt-3">Clear</button>
+                        <button type="submit" class="btn btn-primary rounded-pill me-2 mt-3">Save Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+</div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    xintegrity="sha384-YvpcrYf0tY3lHB60NNWqQWpsdYh/yJ83G1K9aA46Gq6Q0XpQY5R0J3q4z1A8W4A5l1yWpQ8B8T0Jb5K6f8E6"
+    crossorigin="anonymous"></script>
+
+</body>
+
+</html>

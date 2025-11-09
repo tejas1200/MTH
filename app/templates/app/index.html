@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>NewMahavirTentHouse</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <!-- Auto-init Swipers with JSON config -->
+
+
+
+  <!-- Favicons -->
+  {% load static %}
+  <link href="{% static 'images/URL_Logo.png' %}" rel="icon">
+  <link href="{% static 'images/URL_Logo.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+
+
+</head>
+
+<body class="index-page">
+
+  <!-- Header Nav -->
+
+  {% include 'partials/header.html' %}
+
+  <main class="main">
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero section dark-background">
+
+      <!-- Video Background -->
+
+      {% if banner and banner.video %}
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="{{ banner.video.url }}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      {% elif banner and banner.image %}
+      <img src="{{ banner.image.url }}" alt="Banner Image" class="hero-video">
+      {% else %}
+      <video autoplay muted loop playsinline class="hero-video">
+        <source src="{% static 'videos/video_1.mov' %}" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      {% endif %}
+
+
+      <!-- Dark Overlay -->
+      <div class="background-overlay"></div>
+
+      <div class="hero-content">
+        <div class="container">
+          <div class="row justify-content-center text-center">
+            <div class="col-lg-10">
+              <div class="hero-text">
+                <img src="{% static 'images/lOGO_W.png' %}" alt="New Mahavir Tent House Logo" class="hero-logo mb-3">
+                <h1 class="hero-title">NEW MAHAVIR TENT & EVENT <br> MANAGEMENT</h1>
+                <p class="hero-subtitle">Crafting Luxurious Experiences for Your Grandest Moments.</p>
+              </div>
+              <div class="cta-section">
+                <div class="cta-buttons">
+                  <a href="{% url 'contact' %}" class="btn btn-primary btn-cta">Plan Your Event with Us </a>
+                  <a href="{% url 'gallery' %}" class="btn btn-secondary btn-cta">View Gallery</a>
+                </div>
+                <!-- <p class="cta-note">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Saepe quasi oribus...
+                </p> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Intro Section -->
+    <section id="intro" class="intro section">
+
+      <div class="container">
+
+        <div class="row g-4">
+
+          <div class="col-lg-6">
+            <div class="content">
+              <h2>We Are the Leading Event Rental and Decoration Experts in Jamner.</h2>
+              <p class="lead">Mahavir Tent House & Decoration is a trusted name in event rentals and
+                decoration, serving Bangalore for over 25 years. We specialize in providing highquality
+                setups for weddings, birthdays, corporate meetings, outdoor gatherings,
+                and more.</p>
+              <p>🔶 Quality: High-standard event rentals <br>
+                🔶 Versatility: From weddings to Co events <br>
+                🔶 Reliability: Timely & hassle-free service <br>
+
+
+
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="visual-section">
+              <div class="image-wrapper">
+                <img src="{% static 'images/banner.jpeg' %}" alt="Tech Summit" class="img-fluid">
+                <!-- <div class="gradient-overlay"></div> -->
+                <div class="floating-badge">
+                  <!-- <i class="bi bi-calendar-event"></i> -->
+                  <span>New Mahavir Tent House</span>
+                </div>
+              </div>
+
+              <div class="stats-grid">
+                <div class="stat-item">
+                  <div class="stat-number">25+</div>
+                  <div class="stat-label">Years OF Experience</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">5k+</div>
+                  <div class="stat-label">Events</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">5k+</div>
+                  <div class="stat-label">Clients</div>
+                </div>
+                <div class="stat-item">
+                  <div class="stat-number">5*</div>
+                  <div class="stat-label">Rating</div>
+                </div>
+              </div>
+
+
+
+            </div>
+          </div>
+
+        </div>
+
+        <div class="founder-quote">
+          <div class="row align-items-center">
+            <div class="col-lg-3 text-center">
+              <img src="{% static 'images/Pappu.jpg' %}" alt="Sarah Johnson" class="founder-img">
+            </div>
+            <div class="col-lg-9">
+              <blockquote>
+                <p>"Our mission has always been to bridge the gap between visionary ideas and practical implementation.
+                  This summit represents the culmination of years of bringing together the brightest minds in
+                  technology."</p>
+                <cite>
+                  <strong>Mr. Prashant Saitwal</strong>
+                  <span>Founder &amp; Event Director</span>
+                </cite>
+              </blockquote>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+
+    </section><!-- /Intro Section -->
+
+    <!-- Our Services Section -->
+
+    {% load static %}
+    <section id="featured-speakers" class="featured-speakers section">
+
+      <div class="container section-title">
+        <h2>Our Services</h2>
+        <p>We Provide The Best Service For Your Event <br>
+          We focus on creativity, precision, and customer satisfaction, ensuring a seamless and stress-free event
+          experience.
+        </p>
+      </div>
+
+      <div class="container">
+        <div class="row gy-4 mt-4">
+          {% for service in services %}
+          <div class="col-lg-3 col-md-6">
+            <div class="speaker-card compact">
+              <div class="speaker-image">
+                {% if service.image %}
+                <img src="{{ service.image.url }}" alt="{{ service.title }}" class="img-fluid">
+                {% else %}
+                <img src="{% static 'images/default-service.jpg' %}" alt="No image available" class="img-fluid">
+                {% endif %}
+
+                <div class="speaker-overlay">
+                  <div class="speaker-social">
+                    <a href="#" aria-label="Gallery"><i class="bi bi-images"></i></a>
+                  </div>
+                </div>
+              </div>
+              <div class="speaker-content">
+                <h4 class="speaker-name">{{ service.title }}</h4>
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+
+    </section>
+
+    <!-- /Featured Speakers Section -->
+
+    <!-- Schedule Section -->
+    <section id="schedule" class="schedule section light-background">
+
+
+      <div class="container section-title">
+        <h2>Social Media</h2>
+        <!-- <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p> -->
+      </div>
+      <section id="sponsors" class="sponsors section">
+
+        <div class="container">
+
+          <div class="row g-0 clients-wrap">
+
+            <div class="col-xl-3 col-md-4 client-logo text-center">
+              <a href="https://www.youtube.com/@NewMahavirTentEventManagementJ" target="_blank">
+                <img src="{% static 'images/YT_logo.png' %}" class="img-fluid" alt="">
+              </a>
+            </div>
+            <!-- End Client Item -->
+
+            <div class="col-xl-3 col-md-4 client-logo text-center">
+              <a href="https://www.instagram.com/new.mahavir.tent/" target="_blank">
+                <img src="{% static 'images/Insta_logo.png' %}" class="img-fluid" alt="">
+              </a>
+            </div><!-- End Client Item -->
+
+            <div class="col-xl-3 col-md-4 client-logo text-center">
+              <a href="https://www.facebook.com/search/top?q=prashant%20saitwal" target="_blank">
+                <img src="{% static 'images/FB_Logo.png' %}" class="img-fluid" alt="">
+              </a>
+            </div><!-- End Client Item -->
+
+            <div class="col-xl-3 col-md-4 client-logo text-center">
+              <a href="https://wa.me/919922221290" target="_blank" aria-label="Chat on WhatsApp">
+              <img src="{% static 'images/WA_logo.png' %}" class="img-fluid" alt="WhatsApp Logo">
+              </a>
+            </div>
+            <!-- End Client Item -->
+          </div>
+
+        </div>
+
+      </section><!-- /Sponsors Section -->
+      <div class="container">
+
+      </div>
+
+    </section>
+    <!-- /Schedule Section -->
+
+    <!-- Call To Action Section -->
+    <section id="call-to-action" class="call-to-action section dark-background">
+
+      <div class="container">
+
+        <div class="row justify-content-center">
+          <div class="col-lg-8 text-center">
+            <h2 class="display-4 mb-4">Making Every Moment a <br> Grand Celebration.</h2>
+            <!-- <p class="lead mb-5">Join industry leaders and innovators at the premier professional development conference. Secure your place among 5,000+ forward-thinking professionals from 25+ countries.</p> -->
+          </div>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-10">
+            <div class="stats-wrapper">
+              <div class="row g-4">
+                <div class="col-lg-3 col-md-6">
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="bi bi-people"></i>
+                    </div>
+                    <div class="stat-number" data-purecounter-start="0" data-purecounter-end="5000"
+                      data-purecounter-duration="2">5000</div>
+                    <div class="stat-label">Happy Clients</div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="bi bi-person-badge"></i>
+                    </div>
+                    <div class="stat-number" data-purecounter-start="0" data-purecounter-end="85"
+                      data-purecounter-duration="2">20+</div>
+                    <div class="stat-label">Expert Team</div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="bi bi-shield-check"></i>
+                    </div>
+                    <div class="stat-number" data-purecounter-start="0" data-purecounter-end="25"
+                      data-purecounter-duration="2">100%</div>
+                    <div class="stat-label">Service Guaranty</div>
+                  </div>
+                </div>
+                <div class="col-lg-3 col-md-6">
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="bi bi-star-fill"></i>
+                    </div>
+                    <div class="stat-number" data-purecounter-start="0" data-purecounter-end="3"
+                      data-purecounter-duration="2">5</div>
+                    <div class="stat-label">Star Rating</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-lg-6 text-center">
+            <div class="cta-content">
+
+              <!-- <p class="mb-4">Secure your spot at the exclusive rate. Limited availability for premium networking sessions and workshop access.</p> -->
+             <!-- <div class="cta-buttons">
+                <a href="{% static 'pdf/brochure.pdf' %}" 
+                  class="btn btn-outline-secondary btn-lg" 
+                  download="Mahavir_Tent_House_Brochure.pdf"> Download Brochure
+                </a>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section><!-- /Call To Action Section -->
+
+
+
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials section">
+      <div class="container section-title">
+        <h2>Testimonials</h2>
+        <p>Our Clients' Experience, Our Greatest Asset.</p>
+      </div>
+
+      <div class="container">
+        <!-- Regular Testimonials Slider -->
+        <div class="testimonial-slider swiper init-swiper">
+          <script type="application/json" class="swiper-config">
+              {
+                "loop": true,
+                "speed": 600,
+                "autoplay": { "delay": 4000 },
+                "slidesPerView": 1,
+                "spaceBetween": 30,
+                "navigation": {
+                  "nextEl": ".swiper-button-next",
+                  "prevEl": ".swiper-button-prev"
+                },
+                "breakpoints": {
+                  "768": { "slidesPerView": 2 },
+                  "1200": { "slidesPerView": 3 }
+                }
+              }
+            </script>
+
+          <div class="swiper-wrapper">
+            {% for testimonial in testimonials %}
+            <div class="swiper-slide">
+              <div class="testimonial-item">
+                <div class="testimonial-header">
+                  <img src="{{ testimonial.image.url }}" alt="Client" class="img-fluid" loading="lazy">
+                  <div class="rating">
+                    {% for _ in "12345" %}
+                    <i class="bi bi-star-fill"></i>
+                    {% endfor %}
+                  </div>
+                </div>
+                <div class="testimonial-body">
+                  <p>{{ testimonial.feedback }}</p>
+                </div>
+                <div class="testimonial-footer">
+                  <h5>{{ testimonial.client_name }}</h5>
+                  <span>{{ testimonial.client_address }}</span>
+                  <div class="quote-icon">
+                    <i class="bi bi-chat-quote-fill"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          <div style="display: flex; justify-content: center; gap: 20px; margin-top: 30px;">
+            <div class="swiper-button-prev" "></div>
+          <div class=" swiper-button-next"></div>
+          </div>
+        </div>
+
+
+        <!-- Video Shorts Section -->
+
+        {% include 'partials/video_testimonials_list.html' %}
+
+      </div>
+    </section>
+
+    <!-- /Testimonials Section -->
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact section">
+      <div class="container section-title">
+        <h2>Reach Out Anytime</h2>
+        <p></p>
+      </div><!-- End Section Title -->
+
+
+
+      <!-- Google Maps (Full Width) -->
+      <div class="map-section">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3782.391020872058!2d75.765756!3d20.8083305!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bd99ee95619deef%3A0x700c046c144f21ac!2sJamner%2C%20Maharashtra%20424206!5e0!3m2!1sen!2sin!4v1692467890000!5m2!1sen!2sin"
+          width="100%" height="500" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+
+    </section><!-- /Contact Section -->
+
+  </main>
+
+  <!-- Footer -->
+  {% include 'partials/footer.html' %}
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+  <script>
+    document.querySelectorAll('.init-swiper, .youtube-shorts-slider').forEach(container => {
+      const config = JSON.parse(container.querySelector('.swiper-config')?.textContent || '{}');
+      new Swiper(container, config);
+    });
+  </script>
+
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+
+  <script>
+    const lightbox = GLightbox({ selector: '.glightbox' });
+  </script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    new Swiper(".youtube-shorts-slider", {
+      loop: true,
+      speed: 600,
+      spaceBetween: 20,
+      navigation: {
+        nextEl: ".youtube-next",
+        prevEl: ".youtube-prev",
+      },
+      slidesPerView: 1, // mobile default
+      breakpoints: {
+        576: { slidesPerView: 2 },
+        768: { slidesPerView: 3 },
+        992: { slidesPerView: 4 },
+        1200: { slidesPerView: 5 },
+        1400: { slidesPerView: 6 } // ✅ 6 videos per row for large screens
+      }
+    });
+  });
+</script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+
+</body>
+
+</html>

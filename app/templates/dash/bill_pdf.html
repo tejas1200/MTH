@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice {{ bill.bill_number }}</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      color: #222;
+      margin: 40px auto;
+      max-width: 750px;
+      background: #fff;
+      padding: 20px 40px;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .header {
+      text-align: center;
+      border-bottom: 3px solid  #996d00;
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .header .right_logo {
+      position: absolute;
+      right: 0;
+      top: 0;
+      width:  75px;
+      height: 90px;
+      border-radius:none;
+      object-fit: cover;
+    }
+
+    .header img.logo {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 90px;
+      height: 100px;
+      border-radius: none;
+      object-fit: cover;
+    }
+
+
+    .header h2 {
+      color: #996d00;
+      margin: 0;
+      font-weight:bolder;
+      font-size: 22px;
+    }
+
+    .header p {
+      margin: 3px 0;
+      line-height: 1.4;
+    }
+
+    .invoice-title {
+      color: #996d00;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .details, .items {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+
+    .details td {
+      padding: 6px 8px;
+      vertical-align: top;
+    }
+
+    .items th {
+      background: #996d00;
+      color: white;
+      text-align: center;
+      padding: 8px;
+      border: none;
+    }
+
+    .items td {
+      border-bottom: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .summary-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    .summary-section::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: #996d00;
+      transform: translateX(-50%);
+    }
+
+    .bank-details {
+      width: 48%;
+      padding-right: 20px;
+    }
+
+    .bank-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .bank-info img {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    .bank-text strong {
+      color: #000;
+    }
+
+    .totals {
+      width: 48%;
+      padding-left: 20px;
+    }
+
+    .totals td {
+      padding: 5px;
+    }
+
+    .totals .label {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .totals .value {
+      text-align: right;
+      width: 100px;
+    }
+
+    .signature {
+      margin-top: 40px;
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 12px;
+      color: #666;
+      border-top: 2px solid #996d00;
+      padding-top: 10px;
+    }
+
+    .btn-area {
+      text-align: center;
+      margin-top: 25px;
+    }
+
+    .btn-area a, .btn-area button {
+      background: #c9a449;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      margin: 5px;
+      border-radius: 6px;
+      text-decoration: none;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-area a:hover, .btn-area button:hover {
+      background: #b08a31;
+    }
+
+    @media print {
+      .btn-area {
+        display: none;
+      }
+      body {
+        box-shadow: none;
+        border: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="invoice">
+
+  <div class="header">
+    <img src="/static/images/mth_logo.png" class="logo" alt="Company Logo">
+    <h2>NEW MAHAVIR TENT & EVENT MANAGEMENT</h2>
+    <img src="/static/images/Bill_R_logo.jpg" class="right_logo" alt="Right Company Logo">
+    <p>Girija Colony, Near Ganpati Temple, Bhusawal Road, Jamner.<br>
+    Shop No.11/89, Old BJ Market, Near Balgandharv, Jalgaon.<br>
+    Mo.: 9595109029, 9922221290</p>
+  </div>
+
+  <div class="invoice-title">INVOICE - {{ bill.bill_number }}</div>
+
+  <table class="details">
+    <tr>
+      <td><strong>Customer Name:</strong> {{ bill.customer_name }}</td>
+
+    </tr>
+    <tr>
+      <td><strong>Address:</strong> {{ bill.address }}</td>
+      <td><strong>Date:</strong> {{ bill.bill_date }}</td>
+
+    </tr>
+    <tr>
+        <td><strong>Mobile:</strong> {{ bill.contact_number }}</td>
+        <td><strong>Event Date:</strong> {{ bill.event_date }}</td>
+    </tr>
+  </table>
+
+  <table class="items">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th>Particular's</th>
+        <th>Qty</th>
+        <th>Days</th>
+        <th>Rate</th>
+        <th>Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in items %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>{{ item.days }}</td>
+        <td>{{ item.rate }}</td>
+        <td>{{ item.amount }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div class="summary-section">
+    <div class="bank-details">
+      <h4>Banking Details</h4>
+      <div class="bank-info">
+        {% if bank_detail.upi_qr %}
+            <img src="{{ bank_detail.upi_qr.url }}" alt="UPI QR Code">
+        {% else %}
+            <img src="/static/images/upi_qr.png" alt="UPI QR Code">
+        {% endif %}
+        <div class="bank-text">
+          <strong>{{ bank_detail.account_name }}</strong><br>
+          <b>A/C:</b> {{ bank_detail.account_number }}<br>
+          <b>IFSC:</b> {{ bank_detail.ifsc }}<br>
+          <b>Branch:</b> {{ bank_detail.branch }} 
+        </div>
+      </div>
+    </div>
+
+    <table class="totals">
+      <tr><td class="label">Subtotal:</td><td class="value">₹{{ bill.subtotal }}</td></tr>
+      <tr><td class="label">Add. Charges:</td><td class="value">₹{{ bill.additional_charges }}</td></tr>
+      <tr><td class="label">Discount:</td><td class="value">₹{{ bill.discount }}</td></tr>
+      <tr><td class="label">Advance:</td><td class="value">₹{{ bill.advance }}</td></tr>
+      <tr><td class="label">Due:</td><td class="value">₹{{ bill.pending }}</td></tr>
+      <tr style="font-size: 16px;
+                font-weight: bold;
+                background-color: #996d00; 
+                color: white; 
+                padding: 10px 12px; 
+                border-top-left-radius: 8px; 
+                border-bottom-left-radius: 8px;
+                border: none !important;">
+                 <td class="label" style="font-size: 16px;"><strong>Grand Total:</strong></td><td class="value"><strong style="font-size: 16px;">{{ bill.grand_total }}</strong></td></tr>
+    </table>
+  </div>
+
+  <div class="signature">
+    Authorized Signatory
+  </div>
+
+  <div class="footer">
+    <p>Thank you for your business!</p>
+  </div>
+
+  <div class="btn-area">
+    <!-- <button onclick="window.print()"><i class="fas fa-print"></i>  Print</button>
+   
+    <a href="{% url 'delete_bill' bill.id %}" onclick="return confirm('Are you sure you want to delete this bill?')"><i class="fas fa-trash-alt"></i>  Delete</a>
+    <a href="{% url 'bill_list' %}"><i class="fas fa-arrow-left"></i>  Back</a> -->
+    <button onclick="window.print()" style="background-color:#007bff	; color: white;"><i class="fas fa-print"></i>  Print</button>
+    <button onclick="downloadBillAsImage()" style="background-color:#28a745	; color: white;"><i class="fa-solid fa-download"></i> Download Bill</button>
+    <a href="{% url 'send_reminder' bill.id %}" class="btn btn-sm btn-success" style="background-color: #007267	; color: white;"><i class="fas fa-sms"></i> Reminder</a>
+    <a href="{% url 'delete_bill' bill.id %}" onclick="return confirm('Are you sure you want to delete this bill?')" style="background-color: #dc3545	; color: white;"><i class="fas fa-trash-alt"></i>  Delete</a>
+    <a href="{% url 'bill_list' %}" style="background-color:#6c757d		; color: white;"><i class="fas fa-arrow-left"></i>  Back</a>
+
+  </div>
+
+</div>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <script>
+    function downloadBillAsImage() {
+        const invoice = document.getElementById("invoice");
+        html2canvas(invoice).then(canvas => {
+            const link = document.createElement('a');
+            link.download = 'bill.jpg';
+            link.href = canvas.toDataURL('image/jpeg');
+            link.click();
+        });
+    }
+    </script>
+
+</body>
+</html>

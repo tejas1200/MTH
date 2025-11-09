@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>NewMahavirTentHouse</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+
+  <!-- Swiper CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+  <!-- Swiper JS -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+  <!-- Auto-init Swipers with JSON config -->
+
+
+
+  <!-- Favicons -->
+  {% load static %}
+  <link href="{% static 'images/URL_Logo.png' %}" rel="icon">
+  <link href="{% static 'images/URL_Logo.png' %}" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/bootstrap-icons/bootstrap-icons.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/swiper/swiper-bundle.min.css' %}" rel="stylesheet">
+  <link href="{% static 'vendor/glightbox/css/glightbox.min.css' %}" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css" />
+
+  <!-- Main CSS File -->
+  <link href="{% static 'css/main.css' %}" rel="stylesheet">
+
+
+
+</head>
+
+
+<body class="index-page">
+
+  <!-- Header Nav -->
+
+  {% include 'partials/header.html' %}
+
+  <!-- End Header Nav -->
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title dark-background" style="background-image: url({% static 'images/Back_Banner.jpg' %});">
+      <div class="container position-relative">
+        <h1>About</h1>
+        <p>Mahavir Tent House – Crafting Celebrations, Building Trust for 25+ Years.</p>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="current">About</li>
+          </ol>
+        </nav>
+      </div>
+    </div><!-- End Page Title -->
+
+    <!-- About Section -->
+    <section id="about" class="about section">
+
+      <div class="container">
+
+        <div class="row gy-5 align-items-center">
+
+          <div class="col-lg-6">
+            <div class="content">
+              <h3>25 Years of Elegant Events – <br>Jamner’s Most Trusted Decorators!</h3>
+              <p class="lead">For over 25 years, Mahavir Tent House has proudly served the people of Jamner and the entire Jamner Taluka in Jalgaon District, earning a reputation built on trust, quality, and lasting relationsh</p>
+
+              <p>We specialize in event decoration, tent services, and complete event management solutions that make weddings, parties, and social functions memorable. Our experience and dedication have made us the most preferred event decorators in Jamner, delivering creativity, elegance, and timely execution.</p>
+
+              <div class="quote-section">
+                <blockquote>
+                  <p>"Our long-standing bond with the community reflects our commitment to excellence, reliability, and customer satisfaction"</p>
+                  <cite>— Mr. Prakash Saitwal, Founder</cite>
+                </blockquote>
+              </div>
+              
+
+
+              <!-- <div class="cta-buttons">
+                <a href="#" class="btn-primary">View Full Agenda</a>
+                <a href="#" class="btn-secondary">Meet Our Speakers</a>
+              </div> -->
+
+            </div>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="stats-grid">
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-people"></i>
+                </div>
+                <div class="stat-content">
+                  <h4>5000+</h4>
+                  <p>Happy Clients</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-person-badge-fill"></i>
+                </div>
+                <div class="stat-content">
+                  <h4>25+</h4>
+                  <p>Expert Team</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-shield-check"></i>
+                </div>
+                <div class="stat-content">
+                  <h4>100%</h4>
+                  <p>Service Guaranty</p>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon">
+                  <i class="bi bi-star-fill"></i>
+                </div>
+                <div class="stat-content">
+                  <h4>5 star</h4>
+                  <p>Great Rating</p>
+                </div>
+              </div>
+
+            </div><!-- End Stats Grid -->
+          </div>
+
+        </div><!-- End Row -->
+
+        <div class="row mt-5">
+          <div class="col-12">
+            <div class="audience-section">
+              <h3>Who Should Attend?</h3>
+              <!-- <p class="text-center">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore.</p> -->
+
+              <div class="row gy-4 mt-4">
+
+                <div class="col-lg-2 col-md-4 col-6">
+                  <div class="audience-item">
+                    <div class="audience-icon">
+                      <i class="bi bi-heart-fill text-danger"></i>
+                    </div>
+                    <h5>Family Events</h5>
+                    <p>Couples & Families planning weddings, engagements, or anniversaries</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6">
+                  <div class="audience-item">
+                    <div class="audience-icon">
+                      <i class="bi bi-briefcase-fill text-primary"></i>
+                    </div>
+                    <h5>Corporate Events</h5>
+                    <p>Corporate Clients organizing conferences, inaugurations, or festive events</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6">
+                  <div class="audience-item">
+                    <div class="audience-icon">
+                      <i class="bi bi-people-fill text-success"></i>
+                    </div>
+                    <h5>Decorators</h5>
+                    <p>Event Planners seeking reliable decoration and tent solutions</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6">
+                  <div class="audience-item">
+                    <div class="audience-icon">
+                      <i class="bi bi-building-fill text-warning"></i>
+                    </div>
+                    <h5>Community</h5>
+                    <p>Community Groups hosting cultural, religious, or social gatherings</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6">
+                  <div class="audience-item">
+                    <div class="audience-icon">
+                      <i class="bi bi-geo-alt-fill text-info"></i>
+                    </div>
+                    <h5>Anyone</h5>
+                    <p>Anyone in Jamner & surrounding areas who wants a professionally managed, beautifully decorated event</p>
+                  </div>
+                </div>
+
+                <div class="col-lg-2 col-md-4 col-6">
+                  <div class="audience-item">
+                    <div class="audience-icon">
+                      <i class="bi bi-music-note-beamed"></i>
+                    </div>
+                    <h5>Entertainment</h5>
+                    <p>Entertainment organizers arranging concerts, shows, or stage events</p>
+                  </div>
+                </div>
+
+              </div><!-- End Audience Grid -->
+            </div><!-- End Audience Section -->
+          </div>
+        </div><!-- End Row -->
+
+      </div>
+
+    </section><!-- /About Section -->
+
+  </main>
+
+   <!-- Footer -->
+{% include 'partials/footer.html' %}
+
+
+ <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/php-email-form/validate.js' %}"></script>
+  <script src="{% static 'vendor/purecounter/purecounter_vanilla.js' %}"></script>
+  <script src="{% static 'vendor/swiper/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/glightbox/js/glightbox.min.js' %}"></script>
+
+  <!-- Main JS File -->
+  <script src="{% static 'js/main.js' %}"></script>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,135 @@
+{% extends 'dash/base.html' %}
+
+<title>{% block title %} MahavirTent- Staff {% endblock %}</title>
+<!-- Bootstrap CSS -->
+
+
+
+<!-- Main Content -->
+{% block content %}
+    <!-- Main Content -->
+    <main class="main-content">
+      <div class="header" style="color:white ;">
+        <h2 class="px-4">Add Salary Details</h2>
+      </div>
+      <div class="container-fluid mt-4">
+        <div class="card form-card">
+          <div class="card-body">
+            <!-- <h4 class="mb-4">Enter Salary Details</h4> -->
+
+            <form method="POST">
+              {% csrf_token %}
+
+              <div class="mb-3">
+                <label for="staff" class="form-label">Select Staff:</label>
+                <select class="form-control" id="staff" name="staff" required>
+                  <option value="">-- Select Staff --</option>
+                  {% for s in staff_members %}
+                  <option value="{{ s.id }}">{{ s.name }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+
+
+              <div class="mb-3">
+                <label for="salaryDate" class="form-label">Date</label>
+                <input type="date" class="form-control" id="salaryDate" name="month_date" required>
+              </div>
+              <div class="mb-3">
+                <label for="basicSalary" class="form-label">Basic Salary</label>
+                <input type="number" class="form-control" id="basicSalary" name="basic_salary" min="0" required>
+              </div>
+              <div class="mb-3">
+                <label for="allowance" class="form-label">Allowance</label>
+                <input type="number" class="form-control" id="allowance" name="allowance" min="0" value="0">
+              </div>
+              <div class="mb-3">
+                <label for="deduction" class="form-label">Deduction</label>
+                <input type="number" class="form-control" id="deduction" name="deduction" min="0" value="0">
+              </div>
+              <div class="mb-3">
+                <label for="netSalary" class="form-label">Net Salary</label>
+                <input type="number" class="form-control" id="netSalary" name="net_salary" readonly>
+              </div>
+              <div class="mb-3">
+                <label for="salaryStatus" class="form-label">Status</label>
+                <select class="form-select" id="salaryStatus" name="status" required>
+                  <option value="Paid">Paid</option>
+                  <option value="Unpaid">Unpaid</option>
+                </select>
+              </div>
+              <div class="d-flex justify-content-end">
+                <button type="reset" class="btn btn-secondary rounded-pill me-2 mt-3">Clear</button>
+                <button type="submit" class="btn btn-primary rounded-pill me-2 mt-3">Save Data</button>
+
+                <a href="{% url 'salary_list' %}" 
+                  class="btn btn-secondary rounded-pill px-3 py-1 d-flex align-items-center justify-content-center"
+                  style="background: linear-gradient(135deg, #e5e7eb, #d1d5db); border: none; color: #374151; font-weight: 600; font-size: 0.85rem; text-decoration: none;">
+                    <i class="fa-solid fa-xmark me-1"></i> Back
+                </a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+  </div>
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    xintegrity="sha384-YvpcrYf0tY3lHB60NNWqQWpsdYh/yJ83G1K9aA46Gq6Q0XpQY5R0J3q4z1A8W4A5l1yWpQ8B8T0Jb5K6f8E6"
+    crossorigin="anonymous"></script>
+
+  <!-- Custom JS for Staff Search -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const searchInput = document.getElementById("staffNameSearch");
+      const suggestionsList = document.getElementById("staff-suggestions");
+      const hiddenStaffId = document.getElementById("selectedStaffId");
+
+      searchInput.addEventListener("keyup", function () {
+        const query = this.value;
+        if (query.length < 1) {
+          suggestionsList.style.display = "none";
+          return;
+        }
+
+        fetch(`/staff_search/?q=${query}`)
+          .then(response => response.json())
+          .then(data => {
+            suggestionsList.innerHTML = "";
+            if (data.length > 0) {
+              data.forEach(staff => {
+                const li = document.createElement("li");
+                li.textContent = staff.name;
+                li.style.padding = "5px";
+                li.style.cursor = "pointer";
+                li.onclick = function () {
+                  searchInput.value = staff.name;
+                  hiddenStaffId.value = staff.id;
+                  suggestionsList.style.display = "none";
+                };
+                suggestionsList.appendChild(li);
+              });
+              suggestionsList.style.display = "block";
+            } else {
+              suggestionsList.style.display = "none";
+            }
+          });
+      });
+    });
+    // Auto-calc Net Salary
+    document.querySelectorAll("#basicSalary, #allowance, #deduction").forEach(input => {
+      input.addEventListener("input", () => {
+        let basic = parseFloat(document.getElementById("basicSalary").value) || 0;
+        let allowance = parseFloat(document.getElementById("allowance").value) || 0;
+        let deduction = parseFloat(document.getElementById("deduction").value) || 0;
+        document.getElementById("netSalary").value = (basic + allowance - deduction).toFixed(2);
+      });
+    });
+  </script>
+
+</body>
+
+</html>{% endblock %}

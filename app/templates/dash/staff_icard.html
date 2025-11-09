@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee ID Card</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load html2canvas for image download functionality -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script>
+        // Tailwind Configuration with Golden Colors
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Golden theme colors
+                        'golden-primary': '#B48842',
+                        'golden-secondary': '#FFC72C',
+                        'dark-text': '#333333',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+
+        /**
+         * Captures the ID card element and triggers a JPEG download.
+         */
+        const downloadIDCard = () => {
+            const card = document.getElementById('idCard');
+            if (!card) return console.error('ID Card element not found.');
+
+            // Use html2canvas to render the DOM element to a canvas
+            html2canvas(card, {
+                scale: 2, // Increase scale for higher resolution image
+                logging: false,
+                useCORS: true // Required if the image URL is external
+            }).then(canvas => {
+                // Convert canvas to base64 image data (JPEG format)
+                const imgData = canvas.toDataURL('image/jpeg', 0.9); 
+                
+                // Create a temporary link element
+                const link = document.createElement('a');
+                link.href = imgData;
+                link.download = 'ROHAN_GUPTA_ID_CARD.jpg'; // Set default filename
+                
+                // Append the link and trigger the download
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(error => {
+                console.error("Error during canvas generation:", error);
+            });
+        };
+    </script>
+    <style>
+        /* Custom styles for fixed size card and effects */
+        .id-card {
+            width: 350px;
+            max-width: 90%;
+            height: 550px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffff;
+            position: relative;
+        }
+        .signature-line {
+            border-bottom: 2px dashed #9ca3af;
+        }
+        /* Style for the photo border */
+        .photo-container {
+            width: 120px;
+            height: 120px;
+            border: 4px solid #ffffff; 
+            border-radius: 50%;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        /* Button styles */
+        .action-button {
+            transition: all 0.2s;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+        }
+        .action-button:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col justify-center items-center min-h-screen p-4">
+
+    <!-- ID Card Container -->
+    <div id="idCard" class="id-card rounded-xl overflow-hidden transition-all duration-300 hover:shadow-xl mb-8">
+        
+        <!-- Header Section (Golden Primary) -->
+        <div class="h-44 bg-golden-primary pt-6 pb-2 relative flex flex-col items-center">
+            
+            <!-- Company Name and Logo -->
+            <div class="z-10 flex flex-col items-center space-y-1 text-white">
+              
+                <h1 class="text-xl font-bold tracking-wider">NEW MAHAVIR TENT</h1>
+                <h2 class="text-xl font-bold tracking-wider">& EVENT MANAGEMENT</h2>
+                <p class="text-xs font-light opacity-80 mt-1">Girija Colony, Jamner.</p>
+            </div>
+
+            <!-- Photo Container (Mocked Data) -->
+            <div class="photo-container absolute -bottom-16 mt-2 bg-gray-200 overflow-hidden flex items-center justify-center">
+                <!-- Placeholder Image URL for staff photo -->
+                <img src="{{ staff.photo.url }}" 
+                     alt="Employee Photo" 
+                     class="w-full h-full object-cover"
+                     crossorigin="anonymous"> <!-- Needed for html2canvas to capture the image -->
+            </div>
+        </div>
+
+        <!-- Main Info Content -->
+        <div class="flex flex-col items-center mt-20 px-8">
+            <h2 class="mt-2 text-2xl font-extrabold text-dark-text tracking-wide">{{ staff.name }}</h2>
+            <p class="text-sm text-gray-600 font-semibold uppercase bg-gray-100 px-3 py-1 rounded-full mt-1">{{ staff.role }}</p>
+
+            <div class="w-full mt-3 space-y-3 text-sm text-gray-700">
+                <!-- Mobile No. -->
+                <div class="flex justify-between items-center pb-1 border-b border-gray-100">
+                    <span class="font-bold text-golden-primary">Mobile No.</span>
+                    <span class="font-bold text-dark-text"> {{ staff.phone }}</span>
+                </div>
+
+                <!-- Address -->
+                <div class="flex justify-between items-center pb-1 border-b border-gray-100">
+                    <span class="font-bold text-golden-primary">Address</span>
+                    <span class="font-bold text-dark-text text-right">{{ staff.address }}</span>
+                </div>
+
+                <!-- DOJ (Date of Joining) -->
+                <div class="flex justify-between items-center pb-1 border-b border-gray-100">
+                    <span class="font-bold text-golden-primary">DOJ</span>
+                    <span class="font-bold text-dark-text">{{ staff.joining_date|date:"d M Y" }}</span>
+                </div>
+
+                <!-- Status -->
+                <div class="flex justify-between items-start pt-1">
+                    <span class="font-bold text-golden-primary mr-4">Status</span>
+                    <!-- Mocking staff.is_active = true -->
+                    {% if staff.is_active %}
+                    <span class="text-green-600 font-bold">Active</span> 
+                    {% else %}
+                    <span class="text-red-600 font-bold">Inactive</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <!-- Footer / Signature -->
+        <div class="px-6 mt-6 pb-4">
+            <div class="text-xs text-gray-600 text-center uppercase mb-2">
+                _________________________ <br> Employe Signature
+            </div>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="flex space-x-4">
+        <!-- Download Button -->
+        <button 
+            onclick="downloadIDCard()" 
+            class="action-button bg-golden-primary text-white shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-golden-secondary focus:ring-opacity-50">
+            Download ID
+        </button>
+
+        <!-- Back Button -->
+        <a href="{% url 'staff_list' %}" 
+           class="action-button bg-gray-300 text-dark-text flex items-center shadow-lg hover:bg-gray-400 focus:outline-none focus:ring-4 focus:ring-gray-500 focus:ring-opacity-50">
+            Back to List
+        </a>
+    </div>
+
+</body>
+</html>

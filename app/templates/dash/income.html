@@ -1,0 +1,180 @@
+{% extends "dash/base.html" %}
+{% load static %}
+
+{% block title %}Income Dashboard - MahavirTent{% endblock %}
+
+
+{% block content %}
+<div class="main-content">
+    <div class="header pb-6 pt-5 pt-md-8">
+        <div class="container-fluid">
+            <div class="top-header mb-2 mt--4">
+                <h2 class="text-white">Income Dashboard</h2>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+                <form method="get" 
+            class="flex flex-wrap gap-6 items-end justify-center bg-gradient-to-r from-blue-50 to-indigo-50 p-6 rounded-2xl shadow-lg border border-blue-100 mb-6 transition-all duration-300 hover:shadow-xl">
+
+            <!-- Start Date -->
+            <div class="flex flex-col">
+                <label class="text-sm font-semibold text-gray-700 mb-1 tracking-wide">Start Date</label>
+                <input type="date" name="start_date" value="{{ start_date }}"
+                    class="w-48 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            </div>
+
+            <!-- End Date -->
+            <div class="flex flex-col">
+                <label class="text-sm font-semibold text-gray-700 mb-1 tracking-wide">End Date</label>
+                <input type="date" name="end_date" value="{{ end_date }}"
+                    class="w-48 border border-gray-300 rounded-lg px-3 py-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+            </div>
+
+            <!-- Payment Method -->
+            <div class="flex flex-col">
+                <label class="text-sm font-semibold text-gray-700 mb-1 tracking-wide">Payment Method</label>
+                <select name="payment_method"
+                    class="w-48 border border-gray-300 rounded-lg px-3 py-2 bg-white text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    <option {% if payment_method_filter == 'All' %}selected{% endif %}>All</option>
+                    <option value="Cash" {% if payment_method_filter == 'Cash' %}selected{% endif %}>Cash</option>
+                    <option value="UPI" {% if payment_method_filter == 'UPI' %}selected{% endif %}>UPI</option>
+                    <option value="Card" {% if payment_method_filter == 'Card' %}selected{% endif %}>Card</option>
+                </select>
+            </div>
+
+            <!-- Buttons -->
+            <div class="flex gap-3 mt-2">
+                <button type="submit"
+                    class="px-5 py-2 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:ring-2 focus:ring-blue-400 transition-all">
+                    Apply
+                </button>
+                <a href="{% url 'income_dashboard' %}"
+                    class="px-5 py-2 bg-gray-300 text-gray-800 font-semibold rounded-lg shadow-md hover:bg-gray-400 focus:ring-2 focus:ring-gray-300 transition-all">
+                    Reset
+                </a>
+            </div>
+        </form>
+
+        <div class="row g-4">
+            <!-- Total Income -->
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-green-50 border border-green-100 p-3 rounded-3xl shadow-sm h-100 position-relative">
+                    <i class="fa-solid fa-coins text-green-400 position-absolute top-2 end-3 fs-5"></i>
+                    <div class="card-body">
+                        <p class="text-sm fw-semibold text-secondary mb-1">Total Income</p>
+                        <p class="h2 fw-bold text-green-700 mt-2 mb-0">₹{{ total_grand_total|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pending Amounts -->
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-blue-50 border border-blue-100 p-3 rounded-3xl shadow-sm h-100 position-relative">
+                     <i class="fa-solid fa-money-bill-trend-up text-blue-400 position-absolute top-2 end-3 fs-5"></i>
+                    <div class="card-body">
+                        <p class="text-sm fw-semibold text-secondary mb-1">Advance Payments</p>
+                        <p class="h2 fw-bold text-blue-700 mt-2 mb-0">₹{{ total_advance|floatformat:2 }} </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advance Payments -->
+            <div class="col-xl-3 col-lg-6">
+                <div class="card bg-yellow-50 border border-yellow-100 p-3 rounded-3xl shadow-sm h-100 position-relative">
+                    <i class="fa-solid fa-hourglass-half text-yellow-400 position-absolute top-2 end-3 fs-5"></i>
+                    <div class="card-body">
+                        <p class="text-sm fw-semibold text-secondary mb-1">Pending Amounts</p>
+                        <p class="h2 fw-bold text-yellow-700 mt-2 mb-0">₹{{ total_pending|floatformat:2 }}</p>
+                    </div>
+                </div>
+            </div>
+
+    <!-- Breakdown by Payment Type -->
+    <div class="col-xl-3 col-lg-6">
+        <div class="card bg-purple-50 border border-purple-100 p-3 rounded-3xl shadow-sm h-100 position-relative">
+            <i class="fa-solid fa-chart-pie text-purple-400 position-absolute top-2 end-3 fs-5"></i>
+            <div class="card-body">
+                <p class="text-sm fw-semibold text-secondary mb-1">Payment By</p>
+                <div class="mt-2">
+                    {% for b in breakdown %}
+                    <p class="text-gray-600 fw-bold mb-1">
+                        {{ b.payment_method }}: ₹ {{ b.amount|floatformat:2 }}
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div class="card data-card shadow mb-4 mt-4">
+        <div class="card-header ">
+            <a href="{% url 'export_income' 'excel' %}?start_date={{ start_date }}&end_date={{ end_date }}&payment_method={{ payment_method_filter }}" class="btn btn-success"> <i class="fa-solid fa-file-excel"></i> Export Excel</a>
+        </div>
+    <div class="card-body p-0">
+    <!-- Table -->
+    <div class="table-responsive">
+        <table class="table align-items-center table-flush">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th class="px-4 py-3 text-left">Bill No</th>
+                    <th class="px-4 py-3 text-left">Customer</th>
+                    <th class="px-4 py-3 text-center">Date</th>
+                    <th class="px-4 py-3 text-end">Total</th>
+                    <th class="px-4 py-3 text-end">Paid</th>
+                    <th class="px-4 py-3 text-end">Pending</th>
+                    <th class="px-4 py-3 text-left">Payment Method</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for bill in bills %}
+                <tr>
+                    <td class="text-center">{{ forloop.counter }}</td>
+                    <td class="px-4 py-3">{{ bill.bill_number }}</td>
+                    <td class="px-4 py-3">{{ bill.customer_name }}</td>
+                    <td class="px-4 py-3">{{ bill.bill_date }}</td>
+                    <td class="px-4 py-3 text-end">₹{{ bill.grand_total|floatformat:2 }}</td>
+                    <td class="px-4 py-3 text-end">₹{{ bill.paid_amount|floatformat:2 }}</td>
+                    <td class="px-4 py-3 text-end">₹{{ bill.pending|floatformat:2 }}</td>
+                    <td class="px-4 py-3 text-center">{{ bill.payment_method }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-gray-500">No bills found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        <!--  Pagination -->
+          <div class="pagination mt-4 text-center">
+  <ul class="pagination justify-content-center">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}{% if payment_method_filter %}&payment_method={{ payment_method_filter }}{% endif %}">
+          « Prev
+        </a>
+      </li>
+    {% endif %}
+
+    <li class="page-item disabled">
+      <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
+    </li>
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if start_date %}&start_date={{ start_date }}{% endif %}{% if end_date %}&end_date={{ end_date }}{% endif %}{% if payment_method_filter %}&payment_method={{ payment_method_filter }}{% endif %}">
+          Next »
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</div>
+    </div>
+</div>
+    </div>
+</div>
+{% endblock %}

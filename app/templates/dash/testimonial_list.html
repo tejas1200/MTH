@@ -1,0 +1,162 @@
+{% extends 'dash/base.html' %}
+{% load static %}
+{% block title %}Manage Testimonials{% endblock %}
+
+{% block content %}
+<div class="container mt-4 ml-80 mr-10">
+	<h3 class="fw-bold mb-4 text-white">💬 Manage Client Testimonials</h3>
+
+	<!-- Add Testimonial -->
+	<div class="card shadow-sm border-0 rounded-4 mb-5">
+		<div class="card-body">
+			<h5 class="fw-bold mb-3">Add New Testimonial</h5>
+			<form method="POST" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="hidden" name="add_testimonial" value="1">
+				<div class="row g-3">
+					<div class="col-md-4">
+						<label class="form-label">Client Name</label>
+						<input type="text" name="client_name" class="form-control rounded-3" required>
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Client Address</label>
+						<input type="text" name="client_address" class="form-control rounded-3">
+					</div>
+					<div class="col-md-4">
+						<label class="form-label">Client Image (optional)</label>
+						<input type="file" name="image" class="form-control rounded-3" accept="image/*">
+					</div>
+					<div class="col-12">
+						<label class="form-label">Feedback</label>
+						<textarea name="feedback" class="form-control rounded-3" rows="3" required></textarea>
+					</div>
+				</div>
+				<div class="text-end mt-3">
+					<button type="submit" class="btn btn-primary rounded-pill px-4">
+						<i class="fas fa-plus"></i> Add Testimonial
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+	<!-- All Testimonials -->
+	<div class="card shadow-sm border-0 rounded-4">
+		<div class="card-body">
+			<h5 class="fw-bold mb-3">All Testimonials</h5>
+			<div class="row">
+				{% for t in testimonials %}
+				<div class="col-md-4 mb-4">
+					<div class="card border-0 shadow-sm rounded-4 h-100">
+						<!-- Horizontal Layout START -->
+						<div class="card-body d-flex align-items-start">
+							
+							<!-- LEFT: IMAGE CONTAINER -->
+							<div class="flex-shrink-0 me-4 pt-1"> 
+								{% if t.image %}
+									<!-- Removed mb-3, added pt-1 for slight vertical alignment adjustment -->
+									<img src="{{ t.image.url }}" class="rounded-circle" width="80" height="80" style="object-fit: cover;">
+								{% else %}
+									<img src="{% static 'images/default-avatar.png' %}" class="rounded-circle" width="80" height="80">
+								{% endif %}
+							</div>
+							
+							<!-- RIGHT: DETAILS AND ACTIONS CONTAINER -->
+							<div class="flex-grow-1 text-start"> 
+								<h6 class="fw-bold mb-0">{{ t.client_name }}</h6>
+								<small class="text-muted d-block mb-2">{{ t.client_address }}</small>
+								
+								<p class="mt-2 text-secondary">{{ t.feedback|truncatechars:100 }}</p>
+
+								<div class="mt-3">
+									<!-- Edit Button -->
+									<button class="btn btn-sm btn-warning rounded-pill me-2" data-bs-toggle="modal" data-bs-target="#editModal{{ t.id }}">
+										<i class="fas fa-edit"></i> Edit
+									</button>
+
+									<!-- Delete -->
+									<form method="POST" class="d-inline">
+										{% csrf_token %}
+										<input type="hidden" name="delete_testimonial" value="{{ t.id }}">
+										<button type="submit" class="btn btn-sm btn-danger rounded-pill">
+											<i class="fas fa-trash"></i> Delete
+										</button>
+									</form>
+								</div>
+							</div>
+						</div>
+						<!-- Horizontal Layout END -->
+					</div>
+				</div>
+
+				<!-- Edit Modal (Remains the same) -->
+				<div class="modal fade" id="editModal{{ t.id }}" tabindex="-1">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content rounded-4">
+							<form method="POST" enctype="multipart/form-data">
+								{% csrf_token %}
+								<input type="hidden" name="edit_testimonial" value="1">
+								<input type="hidden" name="testimonial_id" value="{{ t.id }}">
+								<div class="modal-header">
+									<h5 class="modal-title">Edit Testimonial</h5>
+									<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+								</div>
+								<div class="modal-body">
+									<div class="mb-3">
+										<label class="form-label">Client Name</label>
+										<input type="text" name="client_name" value="{{ t.client_name }}" class="form-control" required>
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Client Address</label>
+										<input type="text" name="client_address" value="{{ t.client_address }}" class="form-control">
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Feedback</label>
+										<textarea name="feedback" class="form-control" rows="3" required>{{ t.feedback }}</textarea>
+									</div>
+									<div class="mb-3">
+										<label class="form-label">Change Image (optional)</label>
+										<input type="file" name="image" class="form-control" accept="image/*">
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="submit" class="btn btn-success rounded-pill px-4">Save Changes</button>
+									<button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+			<!-- Pagination -->
+			{% if page_obj.has_other_pages %}
+			<nav aria-label="Testimonial pagination" class="mt-4">
+				<ul class="pagination justify-content-center">
+					{% if page_obj.has_previous %}
+					<li class="page-item">
+						<a class="page-link" href="?page={{ page_obj.previous_page_number }}">« Prev</a>
+					</li>
+					{% endif %}
+
+					{% for num in page_obj.paginator.page_range %}
+					{% if page_obj.number == num %}
+					<li class="page-item active"><a class="page-link">{{ num }}</a></li>
+					{% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+					<li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+					{% endif %}
+					{% endfor %}
+
+					{% if page_obj.has_next %}
+					<li class="page-item">
+						<a class="page-link" href="?page={{ page_obj.next_page_number }}">Next »</a>
+					</li>
+					{% endif %}
+				</ul>
+			</nav>
+			{% endif %}
+
+		</div>
+	</div>
+</div>
+{% endblock %}

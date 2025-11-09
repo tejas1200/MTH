@@ -1,0 +1,162 @@
+{% extends "dash/base.html" %}
+{% load static %}
+
+{% block title %}Add Expense - MahavirTent{% endblock %}
+
+
+{% block content %}
+<div class="main-content">
+  <div class="header pb-6 pt-5 pt-md-8">
+    <div class="container-fluid">
+      <div class="top-header mb-2 mt--4">
+        <h2 class="text-white">Add Expense</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="card shadow-lg rounded-3xl p-6 mb-6">
+      <form method="post" enctype="multipart/form-data" id="expense-form" class="row g-4">
+        {% csrf_token %}
+
+        <!-- Category -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Category</label>
+          <div class="input-group">
+            <select name="category" id="category-select" class="form-select">
+              <option value="">-- Select category --</option>
+              {% for c in categories %}
+                <option value="{{ c.id }}">{{ c.name }}</option>
+              {% endfor %}
+              <option value="__add_new__">+ Add new category</option>
+            </select>
+            <button type="button" id="show-add-cat" class="btn btn-outline-primary">Add</button>
+          </div>
+          <div id="new-category-row" class="mt-2" style="display:none;">
+            <input type="text" id="new-category-name" class="form-control d-inline w-50" placeholder="New category name">
+            <button type="button" id="save-new-category" class="btn btn-success btn-sm">Save</button>
+            <button type="button" id="cancel-new-category" class="btn btn-danger btn-sm">Cancel</button>
+          </div>
+        </div>
+
+        <!-- Staff -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Staff (optional)</label>
+          <select name="staff" id="staff-select" class="form-select">
+            <option value="">-- Select staff --</option>
+            {% for s in staff_members %}
+              <option value="{{ s.id }}">{{ s.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <!-- Amount -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Amount (₹)</label>
+          <input type="text" name="amount" id="amount-input" class="form-control" placeholder="0.00">
+          <small id="auto-fill-note" class="text-success" style="display:none;">Auto-filled from latest salary</small>
+        </div>
+
+        <!-- Date -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Date</label>
+          <input type="date" name="date" class="form-control" value="{{ today|default:None }}">
+        </div>
+
+        <!-- Payment Mode -->
+        <div class="col-md-6">
+          <label class="form-label fw-semibold">Payment Mode</label>
+          <select name="payment_mode" class="form-select">
+            <option value="Cash">Cash</option>
+            <option value="UPI">UPI</option>
+            <option value="Card">Card</option>
+            <option value="Bank">Bank Transfer</option>
+          </select>
+        </div>
+
+        <!-- Description -->
+        <div class="col-12">
+          <label class="form-label fw-semibold">Description</label>
+          <textarea name="description" rows="3" class="form-control"></textarea>
+        </div>
+
+        <!-- Buttons -->
+        <div class="col-12 text-end mt-3">
+          <button type="submit" class="btn btn-primary me-2">Save Expense</button>
+          <a href="{% url 'expense_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const categorySelect = document.getElementById('category-select');
+  const staffSelect = document.getElementById('staff-select');
+  const amountInput = document.getElementById('amount-input');
+  const autoFillNote = document.getElementById('auto-fill-note');
+
+  function isStaffSalaryCategory() {
+    const sel = categorySelect.options[categorySelect.selectedIndex];
+    return sel && sel.text && sel.text.trim().toLowerCase() === 'staff salary';
+  }
+
+  function tryFetchSalary() {
+    if (!isStaffSalaryCategory()) {
+      autoFillNote.style.display = 'none';
+      return;
+    }
+    const staffId = staffSelect.value;
+    if (!staffId) return;
+    fetch("{% url 'ajax_get_staff_salary' %}?staff_id=" + staffId)
+      .then(r => r.json())
+      .then(data => {
+        if (data.success) {
+          amountInput.value = data.salary || 0;
+          autoFillNote.style.display = 'inline';
+        }
+      }).catch(e => console.error(e));
+  }
+
+  staffSelect.addEventListener('change', tryFetchSalary);
+  categorySelect.addEventListener('change', function(){
+    if (isStaffSalaryCategory()) tryFetchSalary();
+    else autoFillNote.style.display = 'none';
+
+    if (categorySelect.value === '__add_new__') {
+      document.getElementById('new-category-row').style.display = 'block';
+    } else {
+      document.getElementById('new-category-row').style.display = 'none';
+    }
+  });
+
+  document.getElementById('save-new-category').addEventListener('click', function(){
+    const name = document.getElementById('new-category-name').value.trim();
+    if (!name) return alert('Enter category name');
+    fetch("{% url 'ajax_add_expense_category' %}", {
+      method: 'POST',
+      headers: {'X-CSRFToken': '{{ csrf_token }}','Content-Type':'application/x-www-form-urlencoded'},
+      body: new URLSearchParams({name: name})
+    }).then(r=>r.json()).then(data=>{
+      if (data.success){
+        const opt = document.createElement('option');
+        opt.value = data.id;
+        opt.text = data.name;
+        categorySelect.insertBefore(opt, categorySelect.lastElementChild);
+        categorySelect.value = data.id;
+        document.getElementById('new-category-row').style.display='none';
+        document.getElementById('new-category-name').value='';
+      } else alert('Could not add category');
+    });
+  });
+
+  document.getElementById('cancel-new-category').addEventListener('click', function(){
+    document.getElementById('new-category-row').style.display='none';
+    categorySelect.value='';
+    document.getElementById('new-category-name').value='';
+  });
+});
+</script>
+
+{% endblock %}

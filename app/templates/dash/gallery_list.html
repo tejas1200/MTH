@@ -1,0 +1,158 @@
+{% extends 'dash/base.html' %}
+{% load static %}
+{% block title %}Manage Gallery{% endblock %}
+
+{% block content %}
+<div class="container mt-4 ml-80 mr-10">
+    <h3 class="fw-bold mb-4 text-white">📸 Manage Gallery</h3>
+
+    <!-- Add Category -->
+    <div class="card p-3 mb-4">
+    <h5 class="mb-2 fw-bold">Add New Category</h5>
+        <form method="POST" action="">
+        {% csrf_token %}
+        <div class="input-group mb-3 mt-2">
+            <input type="text" name="category_name" class="form-control" placeholder="Enter new category name" required>
+            <button class="btn btn-warning text-white" type="submit" name="add_category">Add</button>
+        </div>
+        </form>
+
+    <!-- List Categories -->
+   <!-- List Categories -->
+<h6 class="mt-4 mb-2 fw-bold">All Categories</h6>
+
+<div class="row">
+    {% for cat in categories %}
+    <div class="col-md-4 mb-3">
+        <div class="card border-0 shadow-sm rounded-3 h-100">
+            <div class="card-body d-flex justify-content-between align-items-center">
+                <span class="fw-semibold">{{ cat.name }}</span>
+                <form method="POST" class="d-inline">
+                    {% csrf_token %}
+                    <input type="hidden" name="delete_category" value="{{ cat.id }}">
+                    <button type="submit" class="btn btn-sm btn-danger px-2 py-1 rounded-pill">
+                        <i class="fas fa-trash"></i> Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-12">
+        <div class="alert alert-info text-center">No categories yet.</div>
+    </div>
+    {% endfor %}
+</div>
+
+    </div>
+
+
+    <!-- Add New Image Form -->
+    <div class="card shadow-sm border-0 mb-4 rounded-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">Add New Gallery Image</h5>
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="hidden" name="add_gallery" value="1">
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Category</label>
+                        <select name="category" class="form-select rounded-3" required>
+                            <option value="">-- Select Category --</option>
+                            {% for cat in categories %}
+                                <option value="{{ cat.id }}">{{ cat.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Place</label>
+                        <input type="text" name="place" class="form-control rounded-3" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Event Date</label>
+                        <input type="date" name="event_date" class="form-control rounded-3" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Image</label>
+                        <input type="file" name="image" class="form-control rounded-3" accept="image/*" required>
+                    </div>
+                </div>
+
+                <div class="text-end mt-3">
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">Add Image</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Gallery List -->
+    <div class="card shadow-sm border-0 rounded-4">
+        <div class="card-body">
+            <h5 class="fw-bold mb-3">All Gallery Images</h5>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle text-center">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Image</th>
+                            <th>Category</th>
+                            <th>Place</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for gallery in galleries %}
+                        <tr>
+                            <td>
+                                <img src="{{ gallery.image.url }}" width="80" height="80" class="rounded-3 object-fit-cover">
+                            </td>
+                            <td>{{ gallery.category }}</td>
+                            <td>{{ gallery.place }}</td>
+                            <td>{{ gallery.event_date }}</td>
+                            <td>
+                                <form method="POST" class="d-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="delete_gallery" value="{{ gallery.id }}">
+                                    <button type="submit" class="btn btn-sm btn-danger rounded-pill">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr><td colspan="5" class="text-muted py-4">No images found.</td></tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                
+            <!-- Pagination controls -->
+            {% if page_obj.has_other_pages %}
+            <nav aria-label="Gallery pagination">
+            <ul class="pagination justify-content-center mt-3">
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">« Prev</a>
+                </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                <a class="page-link">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</a>
+                </li>
+
+                {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">Next »</a>
+                </li>
+                {% endif %}
+            </ul>
+            </nav>
+            {% endif %}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,71 @@
+<div class="container section-title">
+        <h2>Look at What Our Clients Say</h2>
+        <p>Watch authentic client testimonial videos, captured live at event venues, showcasing their happiness with our event planning and services.</p>
+      </div>
+<!-- Video Slider with Orange Buttons -->
+<div class="position-relative">
+
+  <!-- Left Button -->
+  <button class="btn slider-btn-orange position-absolute top-50 start-0 translate-middle-y shadow" 
+          id="slideLeft" style="z-index: 10;"><
+    <i class="fas fa-chevron-left fs-4 text-white"></i>
+  </button>
+
+  <!-- Slider Container -->
+  <div id="videoSlider" 
+       class="video-slider d-flex overflow-auto pb-3 px-4" 
+       style="gap: 20px; scroll-snap-type: x mandatory; scroll-behavior: smooth;">
+    {% for video in videos %}
+    <div class="flex-shrink-0 card border-0 shadow-sm rounded-4 overflow-hidden position-relative bg-dark"
+         style="width: 250px; aspect-ratio: 9 / 16; scroll-snap-align: start; margin: 40px">
+      
+      <div class="position-relative w-100 h-100">
+        <video 
+          class="w-100 h-100 object-fit-cover rounded-4" 
+          preload="metadata"
+          {% if video.thumbnail %}
+            poster="{{ video.thumbnail.url }}"
+          {% endif %}
+          controls
+          muted
+          style="border-radius: 1rem; object-fit: cover;">
+          <source src="{{ video.video_file.url }}" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+
+        <!-- Play Icon Overlay -->
+        <div class="position-absolute top-50 start-50 translate-middle text-white opacity-75" style="pointer-events:none;">
+          <i class="fas fa-play-circle fa-3x"></i>
+        </div>
+      </div>
+
+      <div class="card-body text-center py-2">
+        <h6 class="fw-bold text-white mb-0">{{ video.title|default:"Untitled Video" }}</h6>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Right Button -->
+  <button class="btn slider-btn-orange position-absolute top-50 end-0 translate-middle-y shadow" 
+          id="slideRight" style="z-index: 10;">>
+    <i class="fas fa-chevron-right fs-4 text-white"></i>
+  </button>
+
+</div>
+
+<script>
+document.getElementById('slideLeft').onclick = function() {
+  document.getElementById('videoSlider').scrollBy({
+    left: -300,
+    behavior: 'smooth'
+  });
+};
+
+document.getElementById('slideRight').onclick = function() {
+  document.getElementById('videoSlider').scrollBy({
+    left: 300,
+    behavior: 'smooth'
+  });
+};
+</script>
