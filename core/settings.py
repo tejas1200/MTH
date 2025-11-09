@@ -78,15 +78,15 @@ WSGI_APPLICATION = "core.wsgi.application"
 # DATABASE CONFIGURATION (PostgreSQL on Railway, Local fallback)
 # ------------------------------------------------------------------------------
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mth',
-        'USER': 'postgres',
-        'PASSWORD': 'tejas',
-        'HOST': 'localhost',  # or IP address
-        'PORT': '5432',       # default PostgreSQL port
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get(
+            "DATABASE_URL",
+            "postgres://postgres:tejas@localhost:5432/mth"
+        ),
+        conn_max_age=600,
+    )
 }
+
 
 # ------------------------------------------------------------------------------
 # PASSWORD VALIDATION
@@ -112,6 +112,10 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+# Ensure STATIC_ROOT exists (for Railway)
+if not os.path.exists(STATIC_ROOT):
+    os.makedirs(STATIC_ROOT, exist_ok=True)
+
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
