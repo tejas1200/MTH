@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import dj_database_url
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -77,13 +78,13 @@ WSGI_APPLICATION = "core.wsgi.application"
 # ------------------------------------------------------------------------------
 # DATABASE CONFIGURATION (PostgreSQL on Railway, Local fallback)
 # ------------------------------------------------------------------------------
+
+
 DATABASES = {
-    "default": dj_database_url.config(
-        default=os.environ.get(
-            "DATABASE_URL",
-            "postgres://postgres:tejas@localhost:5432/mth"
-        ),
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL'),
         conn_max_age=600,
+        ssl_require=True
     )
 }
 
