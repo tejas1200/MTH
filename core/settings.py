@@ -80,15 +80,28 @@ WSGI_APPLICATION = "core.wsgi.application"
 # ------------------------------------------------------------------------------
 
 
-DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
-}
 
-
+if os.environ.get("DATABASE_URL"):
+    # ✅ Railway / Production
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=os.environ['DATABASE_URL'],
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # ✅ Local Development fallback
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'mth',
+            'USER': 'postgres',
+            'PASSWORD': 'tejas',
+            'HOST': 'localhost',
+            'PORT': '5432',
+        }
+    }
 # ------------------------------------------------------------------------------
 # PASSWORD VALIDATION
 # ------------------------------------------------------------------------------
