@@ -6,3 +6,5 @@ def generate_bill_no():
         last_no = int(last_bill.bill_no.split("-")[-1])
         return f"BILL-{last_no+1:04d}"
     return "BILL-0001"
+
+

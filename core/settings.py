@@ -15,8 +15,8 @@ TEMPLATES_DIR = os.path.join(BASE_DIR, 'app', 'templates')
 SECRET_KEY = os.environ.get(
     "SECRET_KEY", "django-insecure-3ko70zjdv!v7+5ailo=3rfcx_b0xv$nz60xkg=k69c=hbp2w1z"
 )
-# DEBUG = os.environ.get("DEBUG", "True") == "True"
-DEBUG = False
+DEBUG = os.environ.get("DEBUG", "True") == "True"
+# DEBUG = False
 ALLOWED_HOSTS = ["*"]
 
 # ------------------------------------------------------------------------------
@@ -34,8 +34,8 @@ INSTALLED_APPS = [
     "app",
 
     # Cloudinary (for image uploads)
-    "cloudinary",
-    "cloudinary_storage",
+    # "cloudinary",
+    # "cloudinary_storage",
 ]
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
@@ -46,7 +46,7 @@ SILENCED_SYSTEM_CHECKS = ["security.W019"]
 # ------------------------------------------------------------------------------
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",  
+    # "whitenoise.middleware.WhiteNoiseMiddleware",  
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -125,18 +125,18 @@ STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
-STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
+# DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
-CLOUDINARY_STORAGE = {
-    "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
-    "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
-    "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
-}
+# CLOUDINARY_STORAGE = {
+#     "CLOUD_NAME": os.environ.get("CLOUDINARY_CLOUD_NAME"),
+#     "API_KEY": os.environ.get("CLOUDINARY_API_KEY"),
+#     "API_SECRET": os.environ.get("CLOUDINARY_API_SECRET"),
+# }
 
-# MEDIA_URL = "/media/"
-# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 # ------------------------------------------------------------------------------
 # DEFAULT SETTINGS
