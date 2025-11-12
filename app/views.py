@@ -2,10 +2,7 @@
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
-from django.contrib import messages   # ✅ correct import
-
-
-
+from django.contrib import messages  
 
 
 def index(request):
