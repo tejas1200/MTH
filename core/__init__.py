@@ -1,8 +1,8 @@
-# core/__init__.py
-"""
-Safe ImageKit integration initializer.
-Avoids touching Django settings before configuration is complete.
-"""
+# # core/__init__.py
+# """
+# Safe ImageKit integration initializer.
+# Avoids touching Django settings before configuration is complete.
+# """
 
 # import os
 
