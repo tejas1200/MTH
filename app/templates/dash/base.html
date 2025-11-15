@@ -21,6 +21,11 @@
     <link href="{% static 'images/URL_Logo.png' %}" rel="apple-touch-icon">
     
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+    <!-- Select2 -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <style>
         :root {
             --primary-color: #5e72e4;
@@ -39,6 +44,19 @@
             background-color: var(--light-bg);
             color: #6c757d;
         }
+
+        .suggestion-portal {
+            position: absolute;
+            background: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            max-height: 250px;
+            overflow-y: auto;
+            z-index: 99999;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            display: none;
+        }
+
 
         .wrapper {
             display: flex;
@@ -428,7 +446,7 @@
         <!-- Sidebar -->
         <nav class="sidebar">
             <div class="logo">
-                <h4><i class="fa-solid fa-gem text-primary me-2"></i><b>Mahavir Tent</b></h4>
+                <h4><i class="fa-solid fa-gem text-primary me-2"></i><b>MAHAVIR TENT</b></h4>
               
             </div>
             <ul class="nav flex-column">

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Invoice {{ bill.bill_number }}</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-   {% load static %}   
+ {% load static %}   
   <link href="{% static 'images/URL_Logo.png' %}" rel="icon">
   <link href="{% static 'images/URL_Logo.png' %}" rel="apple-touch-icon">
   <style>
@@ -303,22 +303,17 @@
     Authorized Signatory
   </div>
 
-  <!-- <div class="footer">
+<div class="footer">
     <p>Thank you for your business!</p>
-  </div> -->
+</div> 
+
 </div>
 
 <div class="btn-area">
-    <button onclick="window.print()" style="background-color:#007bff	; color: white;"><i class="fas fa-print"></i>  Print</button>
     <button onclick="downloadBillAsImage()" style="background-color:#28a745	; color: white;"><i class="fa-solid fa-download"></i> Download Bill</button>
-    <a href="{% url 'send_reminder' bill.id %}" class="btn btn-sm btn-success" style="background-color: #007267	; color: white;"><i class="fas fa-sms"></i> Reminder</a>
-    <a href="{% url 'delete_bill' bill.id %}" onclick="return confirm('Are you sure you want to delete this bill?')" style="background-color: #dc3545	; color: white;"><i class="fas fa-trash-alt"></i>  Delete</a>
-    <a href="#" id="whatsappShareBtn" class="btn btn-success" style="background:#25D366; color:white;">
-    <i class="fa-brands fa-whatsapp"></i> Share
-</a>
-
-    <a href="{% url 'bill_list' %}" style="background-color:#6c757d		; color: white;"><i class="fas fa-arrow-left"></i>  Back</a>
 </div>
+
+
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 <script>
 function downloadBillAsImage() {
@@ -353,18 +348,5 @@ function downloadBillAsImage() {
     });
 }
 </script>
-<script>
-document.getElementById("whatsappShareBtn").addEventListener("click", function() {
-
-    const publicUrl = window.location.origin + "/bill/view/{{ bill.id }}/";
-
-    const message = "Here is your bill: " + publicUrl;
-
-    const whatsappUrl = "https://wa.me/?text=" + encodeURIComponent(message);
-
-    window.open(whatsappUrl, "_blank");
-});
-</script>
-
 </body>
 </html>

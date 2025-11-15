@@ -5,51 +5,59 @@
 
 {% block content %}
 <main class="main-content">
-  <div class="header"><h3>Edit {{ bill.bill_number }}</h3></div>
+  <div class="header">
+    <h3>Edit {{ bill.bill_number }}</h3>
+  </div>
 
   <form method="post" id="billForm">{% csrf_token %}
     <!-- Customer details (pre-filled) -->
     <div class="form-card mb-3">
-      <h6 style="color: orangered; text-align: end; margin-bottom: -20px;" >{{ bill.bill_number }}</h6>
+      <h6 style="color: orangered; text-align: end; margin-bottom: -20px;">{{ bill.bill_number }}</h6>
       <h4>Customer Details</h4>
       <div class="row g-3">
         <!-- <div class="col-md-3"><label>Bill No</label><input class="form-control" readonly value="{{ bill.bill_number }}"></div> -->
-        <div class="col-md-3"><label>Customer</label><input name="customer_name" class="form-control" value="{{ bill.customer_name }}"></div>
-        <div class="col-md-3"><label>Contact</label><input name="contact_number" class="form-control" value="{{ bill.contact_number }}"></div>
-        <div class="col-md-3"><label>Bill Date</label><input type="date" name="bill_date" class="form-control" value="{{ bill.bill_date }}"></div>
-        <div class="col-md-3"><label>Event Date</label><input type="date" name="event_date" class="form-control" value="{{ bill.event_date }}"></div>
-        <div class="col-md-12"><label>Address</label><input name="address" class="form-control" value="{{ bill.address }}"></div>
+        <div class="col-md-3"><label>Customer</label><input name="customer_name" class="form-control"
+            value="{{ bill.customer_name }}"></div>
+        <div class="col-md-3"><label>Contact</label><input name="contact_number" class="form-control"
+            value="{{ bill.contact_number }}"></div>
+        <div class="col-md-3"><label>Bill Date</label><input type="date" name="bill_date" class="form-control"
+            value="{{ bill.bill_date }}"></div>
+        <div class="col-md-3"><label>Event Date</label><input type="date" name="event_date" class="form-control"
+            value="{{ bill.event_date }}"></div>
+        <div class="col-md-12"><label>Address</label><input name="address" class="form-control"
+            value="{{ bill.address }}"></div>
       </div>
     </div>
 
     <div class="table-card mb-3">
       <h4>Items</h4>
       <table class="table" id="billingTable">
-        <thead><tr>
-          <th>No.</th>
-          <th>Particular's</th>
-          <!-- <th>Description</th> -->
-          <th>Qty</th>
-          <th>Days</th>
-          <th>Rate</th>
-          <th>Amount</th>
-          <th>Action</th>
-        </tr></thead>
+        <thead>
+          <tr>
+            <th>No.</th>
+            <th>Particular's</th>
+            <th>Qty</th>
+            <th>Days</th>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Action</th>
+          </tr>
+        </thead>
         <tbody>
           {% for it in items %}
           <tr>
             <td class="row-no text-center">{{ forloop.counter }}</td>
+
             <td>
-              <select name="product[]" class="form-select product-select">
-                <option value="">-- Select --</option>
-                {% for p in products %}
-                  <option value="{{ p.id }}" data-rate="{{ p.rate }}" {% if it.product and p.id == it.product.id %}selected{% endif %}>
-                    {{ p.name }}
-                  </option>
-                {% endfor %}
-              </select>
+              <div class="autocomplete-box">
+                <input type="text" class="form-control product-search" placeholder="Search product..."
+                  value="{% if it.product %}{{ it.product.name }}{% endif %}">
+
+                <input type="hidden" name="product[]" class="product-id"
+                  value="{% if it.product %}{{ it.product.id }}{% endif %}">
+              </div>
             </td>
-            <!-- <td><input name="description[]" class="form-control description" value="{{ it.description }}"></td> -->
+
             <td><input name="quantity[]" class="form-control qty" type="number" value="{{ it.quantity }}"></td>
             <td><input name="days[]" class="form-control days" type="number" value="{{ it.days }}"></td>
             <td><input name="rate[]" class="form-control rate" type="number" step="0.01" value="{{ it.rate }}"></td>
@@ -65,12 +73,16 @@
     <div class="form-card">
       <div class="row g-3">
         <div class="col-md-3"><label>Subtotal</label><input id="subtotal" class="form-control" readonly></div>
-        <div class="col-md-3"><label>Discount</label><input name="discount" id="discount" type="number" value="{{ bill.discount }}"></div>
-        <div class="col-md-3"><label>Additional Charges</label><input name="additional_charges" id="additional_charges" type="number" value="{{ bill.additional_charges }}"></div>
+        <div class="col-md-3"><label>Discount</label><input name="discount" id="discount" type="number"
+            value="{{ bill.discount }}"></div>
+        <div class="col-md-3"><label>Additional Charges</label><input name="additional_charges" id="additional_charges"
+            type="number" value="{{ bill.additional_charges }}"></div>
         <div class="col-md-3"><label>Grand Total</label><input id="grand_total" class="form-control" readonly></div>
-        <div class="col-md-3"><label>Advance</label><input name="advance" id="advance" type="number" value="{{ bill.advance }}"></div>
+        <div class="col-md-3"><label>Advance</label><input name="advance" id="advance" type="number"
+            value="{{ bill.advance }}"></div>
         <div class="col-md-3"><label>Pending</label><input id="pending" class="form-control" readonly></div>
-        <div class="col-md-6"><label>Total (in words)</label><input id="total_words" class="form-control" readonly></div>
+        <div class="col-md-6"><label>Total (in words)</label><input id="total_words" class="form-control" readonly>
+        </div>
         <div class="col-md-4 mb-3">
           <label for="payment_method" class="form-label">Payment Method</label>
           <select name="payment_method" id="payment_method" class="form-select">
@@ -87,122 +99,203 @@
       <a href="{% url 'bill_list' %}" class="btn btn-secondary">Back</a>
     </div>
   </form>
-</main>
+  <div id="suggestion-portal" class="suggestion-portal" style="position:absolute; z-index:9999; background:white;
+     border:1px solid #ddd; border-radius:6px; display:none;
+     max-height:220px; overflow-y:auto; box-shadow:0 3px 8px rgba(0,0,0,0.15);">
+  </div>
 
+</main>
 <script>
+
+  /* ----------------------------------------
+     Build Product List from Django
+  ---------------------------------------- */
+  const PRODUCTS = [
+    {% for p in products %}
+  { id: "{{ p.id }}", name: "{{ p.name }}", rate: "{{ p.rate }}" },
+  {% endfor %}
+];
+
+  const portal = document.getElementById("suggestion-portal");
+
+
+  /* ----------------------------------------
+     Autocomplete Input Handler
+  ---------------------------------------- */
+  document.addEventListener("input", function (e) {
+    if (!e.target.classList.contains("product-search")) return;
+
+    const input = e.target;
+    const row = input.closest("tr");
+    const text = input.value.toLowerCase();
+
+    const matches = PRODUCTS.filter(p => p.name.toLowerCase().includes(text));
+
+    if (matches.length === 0) {
+      portal.style.display = "none";
+      return;
+    }
+
+    // Build dropdown items
+    portal.innerHTML = matches.map(p => `
+        <div class="list-group-item"
+             style="padding:7px 12px; cursor:pointer;"
+             data-id="${p.id}" data-rate="${p.rate}">
+            ${p.name}
+        </div>
+    `).join("");
+
+    // Position portal under input
+    const rect = input.getBoundingClientRect();
+    portal.style.top = rect.bottom + window.scrollY + "px";
+    portal.style.left = rect.left + window.scrollX + "px";
+    portal.style.width = rect.width + "px";
+    portal.style.display = "block";
+
+    // Item click
+    portal.querySelectorAll(".list-group-item").forEach(item => {
+      item.onclick = function () {
+        input.value = this.textContent.trim();
+        row.querySelector(".product-id").value = this.dataset.id;
+
+        // set rate
+        row.querySelector(".rate").value = parseFloat(this.dataset.rate).toFixed(2);
+
+        portal.style.display = "none";
+        recalcAll();
+      };
+    });
+  });
+
+
+  // Hide dropdown when clicking outside
+  document.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("product-search")) {
+      portal.style.display = "none";
+    }
+  });
+
+
+  /* ----------------------------------------
+     Row + Billing Calculations
+  ---------------------------------------- */
   function updateRowNumbers() {
-    document.querySelectorAll('#billingTable tbody tr').forEach((r, i) => r.querySelector('.row-no').textContent = i+1);
+    document.querySelectorAll('#billingTable tbody tr')
+      .forEach((r, i) => r.querySelector('.row-no').textContent = i + 1);
   }
 
-  function toFloat(v){ return parseFloat(v || 0) || 0; }
+  function toFloat(v) { return parseFloat(v || 0) || 0; }
 
-  function recalcAll(){
+  function recalcAll() {
     let subtotal = 0;
-    document.querySelectorAll('#billingTable tbody tr').forEach(row=>{
+
+    document.querySelectorAll('#billingTable tbody tr').forEach(row => {
       const qty = toFloat(row.querySelector('.qty').value);
       const days = toFloat(row.querySelector('.days').value);
       const rate = toFloat(row.querySelector('.rate').value);
       const amount = qty * days * rate;
+
       row.querySelector('.amount').value = amount.toFixed(2);
       subtotal += amount;
     });
+
     document.getElementById('subtotal').value = subtotal.toFixed(2);
 
     const discount = toFloat(document.getElementById('discount').value);
     const add = toFloat(document.getElementById('additional_charges').value);
     const grand = subtotal - discount + add;
+
     document.getElementById('grand_total').value = grand.toFixed(2);
 
     const advance = toFloat(document.getElementById('advance').value);
     const pending = grand - advance;
+
     document.getElementById('pending').value = pending.toFixed(2);
 
-    // words (very simple, server side will also have words if needed)
-    document.getElementById('total_words').value = 'Rupees ' + numberToWords(Math.floor(grand)) + ' only';
+    document.getElementById('total_words').value =
+      "Rupees " + numberToWords(Math.floor(grand)) + " only";
   }
 
-  // very small number->words helper (client-side)
-  function numberToWords(n){
-    // lightweight: handles up to crores similar to server helper
-    const under20 = ["zero","one","two","three","four","five","six","seven","eight","nine","ten",
-      "eleven","twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen"];
-    const tens = ["","","twenty","thirty","forty","fifty","sixty","seventy","eighty","ninety"];
-    if(n < 20) return under20[n];
-    if(n < 100) return tens[Math.floor(n/10)] + (n%10 ? ' ' + under20[n%10] : '');
-    if(n < 1000) return under20[Math.floor(n/100)] + ' hundred' + (n%100 ? ' and ' + numberToWords(n%100) : '');
-    if(n < 100000) return numberToWords(Math.floor(n/1000)) + ' thousand' + (n%1000 ? ' ' + numberToWords(n%1000) : '');
-    if(n < 10000000) return numberToWords(Math.floor(n/100000)) + ' lakh' + (n%100000 ? ' ' + numberToWords(n%100000) : '');
-    return numberToWords(Math.floor(n/10000000)) + ' crore' + (n%10000000 ? ' ' + numberToWords(n%10000000) : '');
-  }
 
-  document.addEventListener('change', function(e){
-    // if product changed - fetch data-rate (from option) OR via AJAX
-    if(e.target.classList.contains('product-select')){
-      const row = e.target.closest('tr');
-      const opt = e.target.selectedOptions[0];
-      let rate = opt.dataset.rate;
-      if(rate === undefined || rate === ""){
-        // fallback to AJAX endpoint
-        const pid = e.target.value;
-        if(!pid){ row.querySelector('.rate').value = ''; recalcAll(); return; }
-        fetch("{% url 'get_product_rate' %}?product_id=" + encodeURIComponent(pid))
-          .then(r=>r.json()).then(data=>{
-            row.querySelector('.rate').value = (data.rate || 0).toFixed(2);
-            recalcAll();
-          }).catch(()=>{ row.querySelector('.rate').value = ''; recalcAll(); });
-      } else {
-        row.querySelector('.rate').value = parseFloat(rate).toFixed(2);
-        recalcAll();
-      }
-    }
-  });
-
-  // recalc on qty/days/rate/discount/advance change
-  document.addEventListener('input', function(e){
-    if(e.target.matches('.qty, .days, .rate, #discount, #advance, #additional_charges')){
-      recalcAll();
-    }
-  });
-
-  // add row
-  document.getElementById('addRow').addEventListener('click', function(){
+  /* ----------------------------------------
+     Add Row (clone with autocomplete support)
+  ---------------------------------------- */
+  document.getElementById('addRow').addEventListener('click', function () {
     const tbody = document.querySelector('#billingTable tbody');
     const newRow = tbody.rows[0].cloneNode(true);
-    // reset fields
-    newRow.querySelectorAll('input').forEach(inp => {
-      if(inp.classList.contains('qty')) inp.value = 1;
-      else if(inp.classList.contains('days')) inp.value = 1;
-      else inp.value = '';
-    });
-    newRow.querySelector('.product-select').selectedIndex = 0;
+
+    // Reset row fields
+    newRow.querySelector(".product-search").value = "";
+    newRow.querySelector(".product-id").value = "";
+    newRow.querySelector(".qty").value = 1;
+    newRow.querySelector(".days").value = 1;
+    newRow.querySelector(".rate").value = "";
+    newRow.querySelector(".amount").value = "";
+
     tbody.appendChild(newRow);
+
     updateRowNumbers();
     recalcAll();
   });
 
-  // remove row
-  document.addEventListener('click', function(e){
-    if(e.target.classList.contains('remove-row')){
+
+  /* ----------------------------------------
+     Remove row
+  ---------------------------------------- */
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('remove-row')) {
       const tbody = document.querySelector('#billingTable tbody');
-      if(tbody.rows.length <= 1){
+
+      if (tbody.rows.length <= 1) {
         alert('At least one row required');
         return;
       }
+
       e.target.closest('tr').remove();
       updateRowNumbers();
       recalcAll();
     }
   });
 
-  // initialize
-  document.addEventListener('DOMContentLoaded', function(){
-    updateRowNumbers();
-    recalcAll();
-    // set default bill_date to today if no value provided by server
-    const bd = document.querySelector('input[name="bill_date"]');
-    if(bd && !bd.value){
-      const d = new Date(); bd.value = d.toISOString().slice(0,10);
+
+  /* ----------------------------------------
+     Recalculate on numeric input change
+  ---------------------------------------- */
+  document.addEventListener('input', function (e) {
+    if (e.target.matches('.qty, .days, .rate, #discount, #advance, #additional_charges')) {
+      recalcAll();
     }
   });
+
+
+  /* Initialize on page load */
+  document.addEventListener('DOMContentLoaded', function () {
+    updateRowNumbers();
+    recalcAll();
+  });
+
+
+  /* ----------------------------------------
+     Number to Words (same as your create bill)
+  ---------------------------------------- */
+  function numberToWords(n) {
+    const under20 = ["zero", "one", "two", "three", "four", "five", "six", "seven",
+      "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen",
+      "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+    const tens = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety"];
+    if (n < 20) return under20[n];
+    if (n < 100) return tens[Math.floor(n / 10)] +
+      (n % 10 ? ' ' + under20[n % 10] : '');
+    if (n < 1000) return under20[Math.floor(n / 100)] +
+      ' hundred' + (n % 100 ? ' and ' + numberToWords(n % 100) : '');
+    if (n < 100000) return numberToWords(Math.floor(n / 1000)) +
+      ' thousand' + (n % 1000 ? ' ' + numberToWords(n % 1000) : '');
+    if (n < 10000000) return numberToWords(Math.floor(n / 100000)) +
+      ' lakh' + (n % 100000 ? ' ' + numberToWords(n % 100000) : '');
+    return numberToWords(Math.floor(n / 10000000)) +
+      ' crore' + (n % 10000000 ? ' ' + numberToWords(n % 10000000) : '');
+  }
+
 </script>
+
 {% endblock %}

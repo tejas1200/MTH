@@ -1848,3 +1848,15 @@ def bank_detail_update(request):
         return redirect("bank_detail_update")
 
     return render(request, "dash/bank_detail_update.html", {"bank_detail": bank_detail})
+
+
+def public_bill_view(request, id):
+    bill = get_object_or_404(Bill, id=id)
+    items = bill.items.all()
+    bank_detail = BankDetail.objects.first()
+
+    return render(request, "dash/bill_public_view.html", {
+        "bill": bill,
+        "items": items,
+        "bank_detail": bank_detail,
+    })

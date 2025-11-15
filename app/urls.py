@@ -68,6 +68,10 @@ urlpatterns = [
     path('bills/<int:bill_id>/delete/', views.delete_bill, name='delete_bill'),
     path('bills/<int:bill_id>/reminder/', views.send_reminder, name='send_reminder'),
 
+    path("bill/view/<int:id>/", views.public_bill_view, name="public_bill_view"),
+
+    
+
 
     # Products
     path('add_product/', views.add_product, name='add_product'),
